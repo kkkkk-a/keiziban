@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>お気に入りスレッド - 掲示板</title>
+    <link rel="stylesheet" href="style.css"> <!-- 共通のCSSを再利用 -->
+</head>
+<body>
+    <header>
+        <h1>掲示板</h1>
+        <nav>
+            <a href="index.html">スレッド一覧</a>
+            <a href="create_thread.html">スレッド作成</a>
+            <a href="favorites.html">お気に入り</a>
+            <a href="my_threads.html">作成したスレ</a>
+            <a href="aa_management.html">AA管理</a>
+            <a href="file_storage.html">ファイル保管庫</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="favorites-header">
+            <h2>お気に入りスレッド (最大100件まで)</h2>
+            <p>お気に入りに登録したスレッドの一覧です。</p>
+        </section>
+
+        <section class="favorite-thread-list">
+            <!-- thread-itemクラスはスレッド一覧ページと同じスタイルを再利用 -->
+            <article class="thread-item favorite-item">
+                <img src="https://via.placeholder.com/100x100.png?text=スレ画像1" alt="スレ画像1" class="thread-image">
+                <div class="thread-info">
+                    <h3><a href="thread_detail.html?id=1">お気に入りスレッドタイトル1</a></h3>
+                    <p class="thread-meta">
+                        カテゴリ: アニメ | 最終更新: 2024/07/28 10:00 | レス数: 150
+                    </p>
+                    <p class="thread-summary">これはお気に入りスレッドの簡単な概要です。</p>
+                </div>
+                <div class="favorite-actions">
+                    <button class="remove-favorite-button" data-thread-id="1">お気に入りから削除</button>
+                </div>
+            </article>
+
+            <article class="thread-item favorite-item">
+                <img src="https://via.placeholder.com/100x100.png?text=スレ画像X" alt="スレ画像X" class="thread-image">
+                <div class="thread-info">
+                    <h3><a href="thread_detail.html?id=X">別のお気に入りスレッドタイトルX</a></h3>
+                    <p class="thread-meta">
+                        カテゴリ: 漫画 | 最終更新: 2024/07/26 15:00 | レス数: 20
+                    </p>
+                    <p class="thread-summary">もう一つのお気に入りスレッドの概要。</p>
+                </div>
+                <div class="favorite-actions">
+                    <button class="remove-favorite-button" data-thread-id="X">お気に入りから削除</button>
+                </div>
+            </article>
+            <!-- 他のお気に入りスレッドが続く -->
+            <p class="no-favorites-message" style="display:none;">お気に入りに登録されたスレッドはありません。</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2024 あなたの掲示板</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>スレッドタイトル1 - 掲示板</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP" crossorigin="anonymous">
+
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js" integrity="sha384-cMkvdD8LoxVzGF/RPUKAcvmm49FQ0oxwDF3BGKtDXcEc+T1b2N+teh/OJfpU0jr6" crossorigin="anonymous"></script>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.4.1/math.min.js"></script>
+        
+
+        <!-- Google Fonts (Noto Sans JP) -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700;900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Reggae+One&display=swap" rel="stylesheet">
+        <!-- QuillのCSS (Snowテーマ) -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/quill/2.0.2/quill.snow.min.css" rel="stylesheet">
+
+
+        <script src="font.js"defer></script>
+</head>
+<body>
+    <header>
+        <h1>創作掲示板</h1>
+        <nav>
+            <a href="index.html">スレッド一覧</a>
+            <a href="create_thread.html">スレッド作成</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="thread-header">
+            <h2>スレッドタイトル1</h2>
+            <img src="" alt="メイン画像" class="main-thread-image">
+            <p class="thread-meta-detail">
+            投稿日時: 2024/07/20 12:00 | レス上限: 100 | 自動過去ログ: 12時間 | PV: 3 | データ: 1B | データ: 1B | 総BAD: 0
+            </p>
+            <!-- タグ -->
+            <p class="thread-meta-detail">アニメ | 二次創作</p>
+            <div class="thread-actions">
+                <button>お気に入りに追加</button>
+                <button>BAD</button>
+                <!-- スレ主用ボタンはJSで表示制御 -->
+                <button class="owner-only">スレ編集</button>
+                <button class="owner-only">スレ削除</button>
+            </div>
+        </section>
+
+        <section class="response-list">
+            <article class="response-item">
+                <div class="response-meta">
+                    <span class="response-number">1</span>
+                    <span class="response-author-id"></span>
+                    <span class="response-timestamp">2024/07/20 12:05:30</span>
+                    <button class="response-heart">♡ 5</button>
+                    <!-- スレ主用ボタンはJSで表示制御 -->
+                    <button class="owner-only">このレスを削除</button>
+                    <button class="owner-only">この投稿者を制限</button>
+                    <!-- 投稿者用ボタンはJSで表示制御 -->
+                    <button class="poster-only"onclick="responseEdit(this)">編集</button>
+                </div>
+                <div class="response-content">
+<p>スレ内容だよ〜ん</p>
+                </div>
+            </article>
+
+        </section>
+
+        <section class="response-form">
+            <h3>レスを投稿する</h3>
+            <div id="editor"></div>
+
+                  
+                <div>
+                    <label><input type="checkbox" name="is_owner"> スレ主として投稿</label>
+                </div>
+                <button type="submit">投稿する</button>
+            </form>
+        </section>
+
+
+        <section class="recommended-threads">
+            <h3>おすすめスレッド</h3>
+            <ul>
+                <li><a href="thread_detail.html?id=3">関連スレ1</a></li>
+                <li><a href="thread_detail.html?id=4">関連スレ2</a></li>
+            </ul>
+        </section>
+    </main>
+
+    <article class="response-item"id="edit-article">
+        <div class="response-content">
+        </div>
+        <div id="edit-area"></div>
+    </article>
+    
+
+    <footer>
+        <p>© 2024 あなたの掲示板</p>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quill/2.0.2/quill.min.js"></script>
+    <script src="quill.js"></script>
+    <script>
+        const editArticle=document.getElementById("edit-article");
+        function responseEdit(button) {
+            // レスポンス項目（親のarticle）を取得
+            const responseItem = button.closest('.response-item');
+            const editArea = document.getElementById('edit-area');
+        
+            // すでにエディタが展開されていればスキップまたはトグル
+            if (editArticle.style.display === 'block') {
+                editArticle.style.display = 'none';
+                editArea.innerHTML = '';
+                return;
+            }
+        
+            // 展開（他のエディタは閉じる）
+            document.querySelectorAll('.edit-area').forEach(area => {
+                area.style.display = 'none';
+                area.innerHTML = '';
+            });
+        
+            // 編集領域を作成
+            editArticle.style.display = 'block';
+            const editorContainer = document.createElement('div');
+            editorContainer.className = 'edit-editor';
+            editArea.appendChild(editorContainer);
+        
+            // 既存の内容を取得（例では単純なテキストだけ）
+            const content = responseItem.querySelector('.response-content').innerText;
+        
+            // Quillを初期化
+            const quill = new Quill(editorContainer, {
+                theme: 'snow'
+            });
+            quill.setText(content);
+        
+            // 保存ボタン
+            const saveButton = document.createElement('button');
+            saveButton.textContent = '保存';
+            saveButton.onclick = () => {
+                const newContent = quill.root.innerHTML;
+                responseItem.querySelector('.response-content').innerHTML = newContent;
+                editArticle.style.display = 'none';
+                editArea.innerHTML = '';
+            };
+            editArea.appendChild(saveButton);
+        }
+        </script>
+        
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>アスキーアート倉庫 - 掲示板</title>
+    <link rel="stylesheet" href="style.css"> <!-- 共通のCSSを再利用 -->
+</head>
+<body>
+    <header>
+        <h1>掲示板</h1>
+        <nav>
+            <a href="index.html">スレッド一覧</a>
+            <a href="create_thread.html">スレッド作成</a>
+            <a href="favorites.html">お気に入り</a>
+            <a href="my_threads.html">作成したスレ</a>
+            <a href="aa_management.html">AA管理</a>
+            <a href="file_storage.html">ファイル保管庫</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="aa-management-header">
+            <h2>アスキーアート倉庫 (最大100個まで登録可能)</h2>
+            <p>ここで登録したアスキーアートは、レス投稿時に簡単に呼び出すことができます。</p>
+        </section>
+
+        <section class="aa-registration-form">
+            <h3>新しいアスキーアートを登録</h3>
+            <form id="register-aa-form">
+                <div>
+                    <label for="aa-name">名前 (呼び出し用):</label>
+                    <input type="text" id="aa-name" name="name" placeholder="例: やる夫、乙" required>
+                </div>
+                <div>
+                    <label for="aa-content">アスキーアート本体:</label>
+                    <textarea id="aa-content" name="content" rows="8" placeholder="ここにアスキーアートを貼り付け" required></textarea>
+                </div>
+                <button type="submit">登録する</button>
+            </form>
+        </section>
+
+        <section class="registered-aa-list">
+            <h3>登録済みアスキーアート一覧</h3>
+            <div class="aa-item">
+                <h4>やる夫 (例)</h4>
+                <pre class="aa-preview">
+　 　 　　　＿＿＿_
+　 　　　／　　 　 　＼
+　　　／　 _ノ 　ヽ､_　 ＼
+　 ／ 　oﾟ⌒　　　⌒ﾟo　 ＼ 　ほんとはもっとAAっぽくしたい
+　 |　　　　 （__人__）　　　　|
+　 ＼　　 　 ｀ ⌒´ 　 　 ／
+                </pre>
+                <div class="aa-actions">
+                    <button class="edit-aa-button">編集</button>
+                    <button class="delete-aa-button">削除</button>
+                </div>
+            </div>
+
+            <div class="aa-item">
+                <h4>乙 (例)</h4>
+                <pre class="aa-preview">
+　　　　　　　　 ,,　＿
+　　　　　　　／ 　　　 ｀ ､
+　　　　　　/　　(_ﾉL_）　 ヽ
+　　　　　 /　　 ´・　 ・｀　　l　　　　乙！
+　　　　 （l　 　　　し　　　　l）
+　　　　　l　　　　＿＿　　 l
+　　　　　 >　､ _ 　　　　 ィ
+　　　　 ／　 　　　￣　　 ヽ
+　　 　 /　|　　　　　　　　　|
+　　　　　 |　　　　　　　　　|
+                </pre>
+                <div class="aa-actions">
+                    <button class="edit-aa-button">編集</button>
+                    <button class="delete-aa-button">削除</button>
+                </div>
+            </div>
+            <!-- 他の登録済みAAが続く -->
+            <p class="no-aa-message" style="display:none;">まだアスキーアートは登録されていません。</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2024 あなたの掲示板</p>
+    </footer>
+</body>
+</html>

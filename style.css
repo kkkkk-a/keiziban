@@ -1,0 +1,1431 @@
+
+@font-face {
+    font-family: 'IPA Gothic'; 
+    src: url('ipaexg.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'IPA Mincho'; 
+    src: url('ipaexm.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'ChilloutTYP-Regular'; 
+    src: url('ChilloutTYP-Regular.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Anzumoji'; 
+    src: url('APJapanesefont.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Planetarium'; 
+    src: url('Planetarium.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Buildingsandundertherailwaytracks-Regular'; 
+    src: url('Buildingsandundertherailwaytracks-Regular.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Dancers'; 
+    src: url('Dancers.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'HannariMincho-Regular'; 
+    src: url('HannariMincho-Regular.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Regular'; 
+    src: url('TypingartGrotesqueTYP-Regular.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Koku Mincho'; 
+    src: url('font_1_kokumr_1.00_rls.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Mona'; 
+    src: url('mona-outline.ttf') format('woff2');
+}
+
+@font-face {
+    font-family: 'Onryou'; 
+    src: url('onryou.TTF') format('truetype');
+}
+
+@font-face {
+    font-family: 'Kowai'; 
+    src: url('ふぉんとうは怖い明朝体.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Ankoku'; 
+    src: url('Zomzi.TTF') format('opentype');
+}
+
+@font-face {
+    font-family: 'Chikara Duyoku'; 
+    src: url('851CHIKARA-DZUYOKU_kanaA_004.ttf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Chikara Yowaku'; 
+    src: url('851CHIKARA-YOWAKU_002.ttf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Monaco'; 
+    src: url('monaco.ttf') format('opentype');
+}
+/* ========================================================================== */
+/* Quill Font Picker and Editor Font Styles (Non-abbreviated)             */
+/* ========================================================================== */
+
+
+/* --- Font Definitions --- */
+/* Replace 'DISPLAY_NAME_HERE' with the actual display name from your <option> tag */
+/* Replace 'CSS_FONT_FAMILY_HERE' with the correct CSS font-family string */
+/* Replace 'VALUE_FROM_OPTION' with the actual value attribute from your <option> tag */
+/* If VALUE_FROM_OPTION contains spaces, ensure Quill generates a usable class, or modify the value. */
+/* For CSS classes with spaces, you might need to escape them: .ql-font-MS\ Gothic */
+/* However, it's best practice for `value` attributes used for CSS classes to not contain spaces.
+   Assume here `value` is used directly or with hyphens for spaces in class names. */
+
+/* == 日本語対応フォント == */
+
+/* ========================================================================== */
+/* Quill Font Picker and Editor Font Styles (Corrected for Spaces)        */
+/* ========================================================================== */
+
+/* General Picker Styling (Adjust as needed) */
+.ql-snow .ql-picker.ql-font {
+    width: 220px; /* ピッカー全体の幅 */
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label { /* 親要素 */
+    /* この要素自体には overflow や text-overflow は不要なことが多い */
+    /* padding-right も ::before で制御するなら不要 */
+    position: relative; /* ::before の width を % で指定する場合の基準 */
+}
+
+/* ラベルのテキスト表示部分（::before 擬似要素）*/
+.ql-snow .ql-picker.ql-font .ql-picker-label::before {
+    display: block; /* text-overflow のために block or inline-block */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%; /* 親要素（.ql-picker-label）いっぱいに広がる */
+    box-sizing: border-box; /* padding を含めて幅計算 */
+    /* ここで右側に矢印のためのスペースを確保 */
+    padding-right: 7.5px; /* 矢印の幅に応じて調整 */
+    /* content プロパティはJavaScriptまたは他のCSSで設定されている前提 */
+}
+
+
+
+/* --- Font Definitions (Corrected) --- */
+
+/* == 日本語対応フォント == */
+/* sans-serif (標準ゴシック体) */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="sans-serif"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="sans-serif"]::before {
+    content: 'ゴシック体 (環境依存標準)';
+    font-family: sans-serif;
+}
+.ql-font-sans-serif {
+    font-family: sans-serif !important;
+}
+
+/* serif (標準明朝体) */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Serif"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Serif"]::before {
+    content: '明朝体 (環境依存標準)';
+    font-family: serif;
+}
+.ql-font-serif {
+    font-family: serif !important;
+}
+
+/* monospace (標準等幅フォント) */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Monospace"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Monospace"]::before {
+    content: '等幅 (環境依存標準)';
+    font-family: monospace;
+}
+.ql-font-monospace {
+    font-family: monospace !important;
+}
+
+/* cursive (筆記体) */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="cursive"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="cursive"]::before {
+    content: '筆記体 (環境依存標準)';
+    font-family: cursive;
+}
+.ql-font-cursive {
+    font-family: cursive !important;
+}
+
+/* fantasy (装飾フォント) */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="fantasy"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="fantasy"]::before {
+    content: '装飾 (環境依存標準)';
+    font-family: fantasy;
+}
+.ql-font-fantasy {
+    font-family: fantasy !important;
+}
+
+
+/* MS Gothic */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="MS-Gothic"]::before, /* MODIFIED */
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="MS-Gothic"]::before {  /* MODIFIED */
+    content: 'MSゴシック(AAに適正)';
+    font-family: "MS Gothic", "ＭＳ ゴシック", sans-serif;
+}
+.ql-font-MS-Gothic { /* MODIFIED (matches JS allowedFonts) */
+    font-family: "MS Gothic", "ＭＳ ゴシック", sans-serif !important;
+}
+
+/* MS Mincho */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="MS-Mincho"]::before, /* MODIFIED */
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="MS-Mincho"]::before {  /* MODIFIED */
+    content: 'MS明朝';
+    font-family: "MS Mincho", "ＭＳ 明朝", serif;
+}
+.ql-font-MS-Mincho { /* MODIFIED */
+    font-family: "MS Mincho", "ＭＳ 明朝", serif !important;
+}
+
+/* Yu Gothic */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Yu-Gothic"]::before, /* MODIFIED */
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Yu-Gothic"]::before {  /* MODIFIED */
+    content: '游ゴシック';
+    font-family: "Yu Gothic", "游ゴシック体", "YuGothic", "游ゴシック Medium", sans-serif;
+}
+.ql-font-Yu-Gothic { /* MODIFIED */
+    font-family: "Yu Gothic", "游ゴシック体", "YuGothic", "游ゴシック Medium", sans-serif !important;
+}
+
+/* Hiragino Kaku Gothic */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Hiragino-Kaku-Gothic"]::before, /* MODIFIED */
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Hiragino-Kaku-Gothic"]::before {  /* MODIFIED */
+    content: 'ヒラギノ角ゴシック';
+    font-family: "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "Hiragino Sans", sans-serif;
+}
+.ql-font-Hiragino-Kaku-Gothic { /* MODIFIED */
+    font-family: "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "Hiragino Sans", sans-serif !important;
+}
+
+/* Hiragino Mincho */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Hiragino-Mincho"]::before, /* MODIFIED */
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Hiragino-Mincho"]::before {  /* MODIFIED */
+    content: 'ヒラギノ明朝';
+    font-family: "Hiragino Mincho ProN", "ヒラギノ明朝 ProN W3", serif;
+}
+.ql-font-Hiragino-Mincho { /* MODIFIED */
+    font-family: "Hiragino Mincho ProN", "ヒラギノ明朝 ProN W3", serif !important;
+}
+
+/* Noto Sans JP */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Noto-Sans-JP"]::before, /* MODIFIED */
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Noto-Sans-JP"]::before {  /* MODIFIED */
+    content: 'ノト・サンズJP';
+    font-family: "Noto Sans JP", sans-serif;
+}
+.ql-font-Noto-Sans-JP { /* MODIFIED */
+    font-family: "Noto Sans JP", sans-serif !important;
+}
+
+/* Noto Serif JP */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Noto-Serif-JP"]::before, /* MODIFIED */
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Noto-Serif-JP"]::before {  /* MODIFIED */
+    content: 'ノト・セリフJP';
+    font-family: "Noto Serif JP", serif;
+}
+.ql-font-Noto-Serif-JP { /* MODIFIED */
+    font-family: "Noto Serif JP", serif !important;
+}
+
+/* Noto Serif JP */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="IPA-Gothic"]::before, /* MODIFIED */
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="IPA-Gothic"]::before {  /* MODIFIED */
+    content: 'IPA-Gothic';
+    font-family: "IPA Gothic", serif;
+}
+.ql-font-IPA-Gothic { /* MODIFIED */
+    font-family: "IPA Gothic", serif !important;
+}
+/* Noto Serif JP */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="IPA-Mincho"]::before, /* MODIFIED */
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="IPA-Mincho"]::before {  /* MODIFIED */
+    content: 'IPA-Mincho';
+    font-family: "IPA Mincho", serif;
+}
+.ql-font-IPA-MinchoP { /* MODIFIED */
+    font-family: "IPA Mincho", serif !important;
+}
+
+
+
+/* Planetarium - No change needed as no space */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Planetarium"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Planetarium"]::before {
+    content: 'プラネタリウム';
+    font-family: "Planetarium", cursive;
+}
+.ql-font-Planetarium {
+    font-family: "Planetarium", cursive !important;
+}
+
+/* ChilloutTYP-Regular - No change needed */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="ChilloutTYP-Regular"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="ChilloutTYP-Regular"]::before {
+    content: 'チルアウト';
+    font-family: "ChilloutTYP-Regular", sans-serif;
+}
+.ql-font-ChilloutTYP-Regular {
+    font-family: "ChilloutTYP-Regular", sans-serif !important;
+}
+
+/* Buildingsandundertherailwaytracks-Regular - No change needed */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Buildingsandundertherailwaytracks-Regular"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Buildingsandundertherailwaytracks-Regular"]::before {
+    content: 'ビルと谷間と高架下';
+    font-family: "Buildingsandundertherailwaytracks-Regular", sans-serif;
+}
+.ql-font-Buildingsandundertherailwaytracks-Regular {
+    font-family: "Buildingsandundertherailwaytracks-Regular", sans-serif !important;
+}
+
+/* Dancers - No change needed */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Dancers"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Dancers"]::before {
+    content: 'オドリコ';
+    font-family: "Dancers", cursive;
+}
+.ql-font-Dancers {
+    font-family: "Dancers", cursive !important;
+}
+
+/* HannariMincho-Regular - No change needed */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="HannariMincho-Regular"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="HannariMincho-Regular"]::before {
+    content: 'はんなり明朝';
+    font-family: "HannariMincho-Regular", serif;
+}
+.ql-font-HannariMincho-Regular {
+    font-family: "HannariMincho-Regular", serif !important;
+}
+
+/* Koku Mincho */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Koku-Mincho"]::before, /* MODIFIED */
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Koku-Mincho"]::before {  /* MODIFIED */
+    content: '刻明朝';
+    font-family: "Koku Mincho", serif;
+}
+.ql-font-Koku-Mincho { /* MODIFIED */
+    font-family: "Koku Mincho", serif !important;
+}
+
+/* Anzumoji - No change needed */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Anzumoji"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Anzumoji"]::before {
+    content: 'あんずもじ';
+    font-family: "Anzumoji", cursive;
+}
+.ql-font-Anzumoji {
+    font-family: "Anzumoji", cursive !important;
+}
+
+/* Onryou - No change needed */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Onryou"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Onryou"]::before {
+    content: '怨霊';
+    font-family: "Onryou", cursive;
+}
+.ql-font-Onryou {
+    font-family: "Onryou", cursive !important;
+}
+
+/* Kowai - No change needed */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Kowai"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Kowai"]::before {
+    content: 'ふぉんとうは怖い明朝体';
+    font-family: "Kowai", serif;
+}
+.ql-font-Kowai {
+    font-family: "Kowai", serif !important;
+}
+
+/* Reggae One */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Reggae-One"]::before, /* MODIFIED */
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Reggae-One"]::before {  /* MODIFIED */
+    content: 'レゲエOne';
+    font-family: "Reggae One", cursive;
+}
+.ql-font-Reggae-One { /* MODIFIED */
+    font-family: "Reggae One", cursive !important;
+}
+
+/* Ankoku - No change needed */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Ankoku"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Ankoku"]::before {
+    content: '暗黒ゾン字';
+    font-family: "Ankoku", cursive;
+}
+.ql-font-Ankoku {
+    font-family: "Ankoku", cursive !important;
+}
+
+/* Chikara Duyoku */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Chikara-Duyoku"]::before, /* MODIFIED */
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Chikara-Duyoku"]::before {  /* MODIFIED */
+    content: 'チカラヅヨク';
+    font-family: "Chikara Duyoku", sans-serif;
+}
+.ql-font-Chikara-Duyoku { /* MODIFIED */
+    font-family: "Chikara Duyoku", sans-serif !important;
+}
+
+/* Chikara Yowaku */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Chikara-Yowaku"]::before, /* MODIFIED */
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Chikara-Yowaku"]::before {  /* MODIFIED */
+    content: 'チカラヨワク';
+    font-family: "Chikara Yowaku", sans-serif;
+}
+.ql-font-Chikara-Yowaku { /* MODIFIED */
+    font-family: "Chikara Yowaku", sans-serif !important;
+}
+
+
+/* == アスキーアート用 == */
+
+/* Mona - No change needed */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Mona"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Mona"]::before {
+    content: 'モナ(AAに適正)';
+    font-family: "Mona", "Monapo", "IPAMonaPGothic", "MS PGothic", monospace;
+}
+.ql-font-Mona {
+    font-family: "Mona", "Monapo", "IPAMonaPGothic", "MS PGothic", monospace !important;
+}
+
+
+/* == 日本語未対応フォント == */
+
+/* Arial - No change needed */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Arial"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Arial"]::before {
+    content: 'アリアル(欧文)';
+    font-family: Arial, Helvetica, sans-serif;
+}
+.ql-font-Arial {
+    font-family: Arial, Helvetica, sans-serif !important;
+}
+
+/* Verdana - No change needed */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Verdana"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Verdana"]::before {
+    content: 'ヴァーダナ(欧文)';
+    font-family: Verdana, Geneva, sans-serif;
+}
+.ql-font-Verdana {
+    font-family: Verdana, Geneva, sans-serif !important;
+}
+
+/* Georgia - No change needed */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Georgia"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Georgia"]::before {
+    content: 'ジョージア(欧文)';
+    font-family: Georgia, serif;
+}
+.ql-font-Georgia {
+    font-family: Georgia, serif !important;
+}
+
+/* Times New Roman */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Times-New-Roman"]::before, /* MODIFIED */
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Times-New-Roman"]::before {  /* MODIFIED */
+    content: 'タイムズ・ニュー・ロマン(欧文)';
+    font-family: "Times New Roman", Times, serif;
+}
+.ql-font-Times-New-Roman { /* MODIFIED */
+    font-family: "Times New Roman", Times, serif !important;
+}
+
+/* Impact - No change needed */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Impact"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Impact"]::before {
+    content: 'インパクト(欧文)';
+    font-family: Impact, Charcoal, sans-serif;
+}
+.ql-font-Impact {
+    font-family: Impact, Charcoal, sans-serif !important;
+}
+
+/* Trebuchet MS */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Trebuchet-MS"]::before, /* MODIFIED */
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Trebuchet-MS"]::before {  /* MODIFIED */
+    content: 'トレブチェットMS(欧文)';
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+.ql-font-Trebuchet-MS { /* MODIFIED */
+    font-family: "Trebuchet MS", Helvetica, sans-serif !important;
+}
+
+/* Palatino Linotype */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Palatino-Linotype"]::before, /* MODIFIED */
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Palatino-Linotype"]::before {  /* MODIFIED */
+    content: 'パラティーノ・リノタイプ(欧文)';
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+}
+.ql-font-Palatino-Linotype { /* MODIFIED */
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif !important;
+}
+
+/* Tahoma - No change needed */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Tahoma"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Tahoma"]::before {
+    content: 'タホマ(欧文)';
+    font-family: Tahoma, Geneva, sans-serif;
+}
+.ql-font-Tahoma {
+    font-family: Tahoma, Geneva, sans-serif !important;
+}
+
+/* Segoe UI */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Segoe-UI"]::before, /* MODIFIED */
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Segoe-UI"]::before {  /* MODIFIED */
+    content: 'セゴエUI(欧文)';
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+.ql-font-Segoe-UI { /* MODIFIED */
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
+}
+
+/* Comic Sans MS */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Comic-Sans-MS"]::before, /* MODIFIED */
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Comic-Sans-MS"]::before {  /* MODIFIED */
+    content: 'コミック・サンズMS(欧文)';
+    font-family: "Comic Sans MS", cursive, sans-serif;
+}
+.ql-font-Comic-Sans-MS { /* MODIFIED */
+    font-family: "Comic Sans MS", cursive, sans-serif !important;
+}
+
+/* Roboto - No change needed */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Roboto"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Roboto"]::before {
+    content: 'ロボト(欧文)';
+    font-family: "Roboto", sans-serif;
+}
+.ql-font-Roboto {
+    font-family: "Roboto", sans-serif !important;
+}
+
+/* Open Sans */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Open-Sans"]::before, /* MODIFIED */
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Open-Sans"]::before {  /* MODIFIED */
+    content: 'オープン・サンズ(欧文)';
+    font-family: "Open Sans", sans-serif;
+}
+.ql-font-Open-Sans { /* MODIFIED */
+    font-family: "Open Sans", sans-serif !important;
+}
+
+/* Noto Sans - No change needed */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Noto-Sans"]::before, /* MODIFIED (if you changed it in JS) */
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Noto-Sans"]::before {  /* MODIFIED (if you changed it in JS) */
+    content: 'ノト・サンズ(欧文)';
+    font-family: "Noto Sans", sans-serif;
+}
+.ql-font-Noto-Sans { /* MODIFIED (if you changed it in JS) */
+    font-family: "Noto Sans", sans-serif !important;
+}
+
+
+/* Montserrat - No change needed */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Montserrat"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Montserrat"]::before {
+    content: 'モントセラト(欧文)';
+    font-family: "Montserrat", sans-serif;
+}
+.ql-font-Montserrat {
+    font-family: "Montserrat", sans-serif !important;
+}
+
+/* Lato - No change needed */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Lato"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Lato"]::before {
+    content: 'ラトー(欧文)';
+    font-family: "Lato", sans-serif;
+}
+.ql-font-Lato {
+    font-family: "Lato", sans-serif !important;
+}
+
+/* Roboto Flex */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Roboto-Flex"]::before, /* MODIFIED */
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Roboto-Flex"]::before {  /* MODIFIED */
+    content: 'ロボト・フレックス(欧文)';
+    font-family: "Roboto Flex", sans-serif;
+}
+.ql-font-Roboto-Flex { /* MODIFIED */
+    font-family: "Roboto Flex", sans-serif !important;
+}
+
+/* Inter - No change needed */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Inter"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Inter"]::before {
+    content: 'インター(欧文)';
+    font-family: "Inter", sans-serif;
+}
+.ql-font-Inter {
+    font-family: "Inter", sans-serif !important;
+}
+
+/* Regular (Typing Art Regular) - No change needed */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Regular"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Regular"]::before {
+    content: 'タイピングアート・レギュラー(欧文)';
+    font-family: "Typing Art Regular", monospace;
+}
+.ql-font-Regular {
+    font-family: "Typing Art Regular", monospace !important;
+}
+
+/* Dancing Script */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Dancing-Script"]::before, /* MODIFIED */
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Dancing-Script"]::before {  /* MODIFIED */
+    content: 'ダンシング・スクリプト(欧文)';
+    font-family: "Dancing Script", cursive;
+}
+.ql-font-Dancing-Script { /* MODIFIED */
+    font-family: "Dancing Script", cursive !important;
+}
+
+/* Orbitron - No change needed */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Orbitron"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Orbitron"]::before {
+    content: 'オービトロン(欧文)';
+    font-family: "Orbitron", sans-serif;
+}
+.ql-font-Orbitron {
+    font-family: "Orbitron", sans-serif !important;
+}
+
+/* Press Start 2P */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Press-Start-2P"]::before, /* MODIFIED */
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Press-Start-2P"]::before {  /* MODIFIED */
+    content: 'プレススタート2P(欧文)';
+    font-family: "Press Start 2P", cursive;
+}
+.ql-font-Press-Start-2P { /* MODIFIED */
+    font-family: "Press Start 2P", cursive !important;
+}
+
+/* Bungee - No change needed */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Bungee"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Bungee"]::before {
+    content: 'バンジー(欧文)';
+    font-family: "Bungee", cursive;
+}
+.ql-font-Bungee {
+    font-family: "Bungee", cursive !important;
+}
+
+/* Lobster - No change needed */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Lobster"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Lobster"]::before {
+    content: 'ロブスター(欧文)';
+    font-family: "Lobster", cursive;
+}
+.ql-font-Lobster {
+    font-family: "Lobster", cursive !important;
+}
+
+/* Bubblegum Sans */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Bubblegum-Sans"]::before, /* MODIFIED */
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Bubblegum-Sans"]::before {  /* MODIFIED */
+    content: 'バブルガム・サンズ(欧文)';
+    font-family: "Bubblegum Sans", cursive;
+}
+.ql-font-Bubblegum-Sans { /* MODIFIED */
+    font-family: "Bubblegum Sans", cursive !important;
+}
+
+/* Courier New */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Courier-New"]::before, /* MODIFIED */
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Courier-New"]::before {  /* MODIFIED */
+    content: 'クーリエ・ニュー(欧文等幅)';
+    font-family: "Courier New", Courier, monospace;
+}
+.ql-font-Courier-New { /* MODIFIED */
+    font-family: "Courier New", Courier, monospace !important;
+}
+
+/* Monaco - No change needed */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Monaco"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Monaco"]::before {
+    content: 'モナコ(欧文等幅)';
+    font-family: Monaco, Consolas, "Lucida Console", monospace;
+}
+.ql-font-Monaco {
+    font-family: Monaco, Consolas, "Lucida Console", monospace !important;
+}
+
+
+/* Standard Fallback Fonts */
+/* ========================================================================== */
+/* Quill Font Picker Styles for Noto Sans JP and Generic Families         */
+/* ========================================================================== */
+
+/* General Picker Styling (共通部分 - 変更なし) */
+.ql-snow .ql-picker.ql-font {
+    width: 220px; /* ピッカーの幅は適宜調整 */
+}
+.ql-snow .ql-picker.ql-font .ql-picker-label,
+.ql-snow .ql-picker.ql-font .ql-picker-item {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.ql-snow .ql-picker.ql-font .ql-picker-label::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item::before {
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+    padding-right: 5px;
+}
+.ql-snow .ql-picker.ql-font .ql-picker-options {
+    min-width: 240px; /* ドロップダウンリストの幅 */
+    max-height: 300px;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+}
+
+/* --- Font Definitions --- */
+
+
+
+/* ツールバーの文字間隔ピッカーのラベル */
+.ql-snow .ql-picker.ql-letterspacing .ql-picker-label::before,
+.ql-snow .ql-picker.ql-letterspacing .ql-picker-item::before {
+    content: '標準'; /* デフォルト表示 (選択されていない、または 'false' の場合) */
+    /* このルールは、data-valueが指定されていないアイテムやラベルのデフォルト表示になります */
+}
+
+/* 各選択肢の表示名 (data-valueに対応) */
+/* data-value が false (JavaScriptで設定した 'false') の場合は、上記の '標準' が表示されるか、
+   Quillが自動的に最初の選択肢を表示します。
+   明示的に '標準' にしたい場合は、data-value="false" のようなセレクタも追加できます。
+*/
+.ql-snow .ql-picker.ql-letterspacing .ql-picker-label[data-value="false"]::before, /* JavaScriptでfalseを設定した場合 */
+.ql-snow .ql-picker.ql-letterspacing .ql-picker-item[data-value="false"]::before {  /* JavaScriptでfalseを設定した場合 */
+    content: '標準';
+}
+
+
+.ql-snow .ql-picker.ql-letterspacing .ql-picker-label[data-value="0.5px"]::before,
+.ql-snow .ql-picker.ql-letterspacing .ql-picker-item[data-value="0.5px"]::before {
+    content: '0.5px';
+}
+
+.ql-snow .ql-picker.ql-letterspacing .ql-picker-label[data-value="1px"]::before,
+.ql-snow .ql-picker.ql-letterspacing .ql-picker-item[data-value="1px"]::before {
+    content: '1px';
+}
+
+.ql-snow .ql-picker.ql-letterspacing .ql-picker-label[data-value="1.5px"]::before,
+.ql-snow .ql-picker.ql-letterspacing .ql-picker-item[data-value="1.5px"]::before {
+    content: '1.5px';
+}
+
+.ql-snow .ql-picker.ql-letterspacing .ql-picker-label[data-value="2px"]::before, /* CORRECTED */
+.ql-snow .ql-picker.ql-letterspacing .ql-picker-item[data-value="2px"]::before {   /* CORRECTED */
+    content: '2px';
+}
+
+.ql-snow .ql-picker.ql-letterspacing .ql-picker-label[data-value="2.5px"]::before, /* CORRECTED */
+.ql-snow .ql-picker.ql-letterspacing .ql-picker-item[data-value="2.5px"]::before {   /* CORRECTED */
+    content: '2.5px';
+}
+
+.ql-snow .ql-picker.ql-letterspacing .ql-picker-label[data-value="3px"]::before, /* CORRECTED */
+.ql-snow .ql-picker.ql-letterspacing .ql-picker-item[data-value="3px"]::before {   /* CORRECTED */
+    content: '3px';
+}
+
+.ql-snow .ql-picker.ql-letterspacing .ql-picker-label[data-value="-0.5px"]::before, /* CORRECTED */
+.ql-snow .ql-picker.ql-letterspacing .ql-picker-item[data-value="-0.5px"]::before { /* CORRECTED */
+    content: '-0.5px';
+}
+
+.ql-snow .ql-picker.ql-letterspacing .ql-picker-label[data-value="-1px"]::before, /* CORRECTED */
+.ql-snow .ql-picker.ql-letterspacing .ql-picker-item[data-value="-1px"]::before {   /* CORRECTED */
+    content: '-1px';
+}
+
+.ql-snow .ql-picker.ql-letterspacing .ql-picker-label[data-value="-1.5px"]::before, /* CORRECTED */
+.ql-snow .ql-picker.ql-letterspacing .ql-picker-item[data-value="-1.5px"]::before {   /* CORRECTED */
+    content: '-1.5px';
+}
+
+.ql-snow .ql-picker.ql-letterspacing .ql-picker-label[data-value="-2px"]::before, /* CORRECTED */
+.ql-snow .ql-picker.ql-letterspacing .ql-picker-item[data-value="-2px"]::before {   /* CORRECTED */
+    content: '-2px';
+}
+
+.ql-snow .ql-picker.ql-letterspacing .ql-picker-label[data-value="-2.5px"]::before, /* CORRECTED */
+.ql-snow .ql-picker.ql-letterspacing .ql-picker-item[data-value="-2.5px"]::before {   /* CORRECTED */
+    content: '-2.5px';
+}
+
+.ql-snow .ql-picker.ql-letterspacing .ql-picker-label[data-value="-3px"]::before, /* CORRECTED */
+.ql-snow .ql-picker.ql-letterspacing .ql-picker-item[data-value="-3px"]::before {   /* CORRECTED */
+    content: '-3px';
+}
+
+/* ピッカー自体の幅調整 (必要に応じて) */
+.ql-snow .ql-picker.ql-letterspacing {
+    width: 70px; /* 例。表示するテキストに合わせて調整 */
+}
+.ql-video-embed-wrapper {
+    position: relative; /* iframeを絶対配置するための基準 */
+    display: block;     /* ブロック要素として振る舞う */
+    width: 100%;        /* コンテナの幅いっぱいに広がる */
+    max-width: 720px;   /* 動画の最大幅 (大きすぎると見づらい場合など。任意) */
+    margin: 1em 0;   /* 上下にマージン、左右中央寄せ (任意) */
+    padding-bottom: 56.25%; /* 16:9 アスペクト比 (9 / 16 * 100%) */
+                           /* 4:3 の場合は 75% (3 / 4 * 100%) */
+    height: 0;          /* 高さはpadding-bottomで確保するため0にする */
+
+    background-color: #000; /* iframeロード中の背景色 (任意) */
+    border-radius: 4px; /* 角丸 (任意) */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* 影 (任意) */
+}
+
+.ql-video-embed-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none; /* iframeのデフォルトの境界線を消す */
+}
+
+
+/* .ql-video-embed-wrapper[data-url*="bbs.animanch.com"] {
+    max-width: 100%; 
+}
+
+.ql-video-embed-wrapper[data-url*="bbs.animanch.com"] iframe {
+} */
+
+    /* カスタムツールバーボタン */
+    .ql-audio-button::before {
+        content: "♫"; /* アイコンの例 (SVGやFontAwesomeなどを使うとより良い) */
+        font-size: 1.2em;
+        font-weight: bold;
+    }
+.ql-calculator-button::before { /* ピッカーの場合 */
+        content: "🎲";
+        font-size: 1.2em; /* アイコンサイズ調整 */
+        font-weight: bold; /* 必要に応じて */
+    }
+    
+.ql-localvideo-button::before {
+        content: "🎬"; /* 絵文字やSVGアイコンなど */
+        font-size: 1.2em; /* アイコンサイズ調整 */
+        font-weight: bold; /* 必要に応じて */
+    }
+    .ql-localtext-button::before {
+        content: "📄";
+        font-size: 1.2em; /* アイコンサイズ調整 */
+        font-weight: bold; /* 必要に応じて */
+    }
+/* style.css または <style> タグ内に追加 */
+.ql-select-line-tool::before {
+    content: "行"; /* または適切なアイコン */
+    font-weight: bold; /* 必要に応じて */
+}
+.ql-select-all-tool::before {
+    content: "全"; /* または適切なアイコン */
+    font-weight: bold; /* 必要に応じて */
+}
+.ql-toolbar .ql-find-previous-tool::before {
+    content: "戻"; /* または '<', '«' など */
+    font-weight: bold; /* 必要に応じて */
+}
+.ql-search-tool::before {
+    content: "検"; /* または '🔍' のような絵文字アイコン */
+    font-weight: bold; /* 必要に応じて */
+}
+.ql-find-next-tool::before { /* オプション */
+    font-weight: bold; /* 必要に応じて */
+    content: "次";
+}
+.ql-html-download::before { /* オプション */
+    content: "web";
+}
+.ql-text-download::before { /* オプション */
+    content: "text";
+}
+.ql-image-download::before { /* オプション */
+    content: "img";
+}
+.ql-toolbar .ql-aa-block::before { /* オプション */
+    content: "AA";
+    font-size: 1.2em; /* アイコンサイズ調整 */
+    font-weight: bold; /* 必要に応じて */
+}
+.ql-toolbar .ql-aa-block.ql-active {
+    color: #007bff; /* 背景色を青に (例: Bootstrapのプライマリカラー風) */
+}
+/* style.css または <style> タグ内 */
+.ql-result-text { /* 基本スタイル (編集後も適用される) */
+    /* display: inline-block; */ /* 必要に応じて */
+    padding: 1px 3px; /* 見た目の調整 */
+    border-radius: 3px;
+}
+.ql-result-text.ql-result-pristine { /* ★ 素のままの状態のスタイル */
+    background-image: linear-gradient(to right, #ff8a00, #e52e71); /* グラデーション */
+    color: white;
+    font-weight: bold;
+    /* pristine状態を示す他のスタイル (例: アイコン表示など) も可能 */
+}
+
+.ql-result-text:not(.ql-result-pristine) { /* ★ 編集された後のスタイル */
+    background-image: none; /* グラデーションを解除 */
+    color: inherit;         /* 通常の文字色に戻す */
+    font-weight: normal;    /* 太字を解除 (もしpristineで太字にしていた場合) */
+    /* border: 1px dashed #999; */ /* 編集済みを示す枠線 (任意) */
+    /* background-color: #f0f0f0; */ /* 薄い背景色 (任意) */
+}
+.ql-toolbar .ql-html-mode:before {
+    content: "<H>";
+    font-size: 1.2em; /* アイコンサイズ調整 */
+    font-weight: bold; /* 必要に応じて */
+}
+.ql-toolbar .ql-draw-mode:before {
+    content: "<D>";
+    font-size: 1.2em; /* アイコンサイズ調整 */
+    font-weight: bold; /* 必要に応じて */
+}
+.ql-toolbar .ql-audio-mode:before {
+    content: "<A>";
+    font-size: 1.2em; /* アイコンサイズ調整 */
+    font-weight: bold; /* 必要に応じて */
+}
+
+/* style.css または <style> タグ内 */
+
+/* AAモードが有効な時のエディタ全体のコンテナ(例: .ql-editor) または特定のラッパーのスタイル */
+/* .ql-editor.aa-mode-active {
+
+} */
+
+/* AAブロックの基本スタイル (フォントサイズと行間はJSで設定) */
+.ql-editor .ql-aa-block {
+    white-space: pre !important;    /* HTML内のスペースと改行を維持、自動改行なし */
+    overflow-x: auto !important;  /* 横スクロール */
+
+    /* font-size と line-height はJSで動的に設定 */
+    /* tab-size, -moz-tab-size もAAでは重要 */
+    tab-size: 4;
+    -moz-tab-size: 4;
+}
+
+/* 通常の段落スタイル (AAモード解除時に戻るスタイル) */
+.ql-editor p,
+.ql-editor div:not(.ql-aa-block):not(.ql-video-embed-wrapper):not(.ql-audio):not(.ql-local-video-wrapper) { /* 他のカスタムブロックを除外 */
+    font-family: sans-serif; /* デフォルトのフォントに戻す (エディタの基本設定に依存) */
+    white-space: normal;  /* 通常の折り返し */
+    overflow-x: visible;
+    font-size: inherit;   /* 親要素から継承 */
+    line-height: inherit; /* 親要素から継承 */
+    background-color: transparent;
+    border: none;
+    padding: 0;
+}
+html{
+    scroll-behavior: smooth;
+}
+/* 基本的なリセットと全体設定 */
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2em;
+}
+
+nav {
+    margin-top: 0.5rem;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 0.5rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+}
+nav a:hover {
+    background-color: #555;
+}
+
+main {
+    width: 90%;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+section {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+
+button{cursor: pointer;}
+button[type="submit"] {
+    padding: 0.7rem 1.5rem;
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* スレッド一覧ページ */
+.search-sort-filter form,
+.search-sort-filter .filter-options {
+    margin-bottom: 1rem;
+    display: flex; /* 横並びの調整 */
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+.search-sort-filter input[type="text"],
+.search-sort-filter select {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.search-sort-filter button:hover {
+    background-color: #4cae4c;
+}
+.filter-options p {
+    margin: 0.5rem 0 0.2rem;
+}
+.filter-options label {
+    margin-right: 1rem;
+}
+
+
+.thread-item {
+    display: flex;
+    border-bottom: 1px solid #eee;
+    padding: 1rem 0;
+}
+.thread-item:last-child {
+    border-bottom: none;
+}
+
+.thread-image {
+    width: 80px; /* サイズ調整 */
+    height: 80px;
+    object-fit: cover;
+    margin-right: 1rem;
+    border-radius: 4px;
+}
+
+.thread-info h3 {
+    margin-top: 0;
+    border-bottom: none;
+}
+.thread-info h3 a {
+    text-decoration: none;
+    color: #337ab7;
+}
+.thread-info h3 a:hover {
+    text-decoration: underline;
+}
+
+.thread-meta {
+    font-size: 0.9em;
+    color: #777;
+    margin-bottom: 0.5rem;
+}
+.thread-summary {
+    font-size: 0.95em;
+}
+
+
+/* スレッド詳細ページ */
+.thread-header .main-thread-image {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+}
+.thread-meta-detail {
+    font-size: 0.9em;
+    color: #555;
+    background-color: #f9f9f9;
+    padding: 0.5rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+.thread-actions button {
+    margin-right: 0.5rem;
+    padding: 0.5rem 0.8rem;
+    cursor: pointer;
+}
+
+.response-item {
+    border: 1px solid #e0e0e0;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+}
+#edit-article{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    display: none;
+}
+.response-meta {
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px dashed #ccc;
+}
+.response-meta span {
+    margin-right: 1rem;
+}
+.response-meta .response-author-id {
+    font-weight: bold;
+}
+.response-meta button { /* レスごとのボタン */
+    font-size: 0.8em;
+    padding: 0.2rem 0.4rem;
+    margin-left: 0.5rem;
+    cursor: pointer;
+}
+
+
+
+
+.response-form > div {
+    margin-bottom: 1rem;
+}
+.response-form label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-weight: bold;
+}
+.response-form input[type="url"],
+.response-form textarea,
+.response-form input[type="file"] {
+    width: 98%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+se-form button[type="submit"]:hover {
+    background-color: #286090;
+}
+
+.navigation-buttons, .recommended-threads {
+    text-align: center;
+}
+.navigation-buttons button {
+    margin: 0 0.5rem;
+}
+.recommended-threads ul {
+    list-style: none;
+    padding: 0;
+}
+.recommended-threads li {
+    margin: 0.3rem 0;
+}
+
+
+/* スレッド作成ページ */
+#create-thread-form > div {
+    margin-bottom: 1rem;
+}
+#create-thread-form label {
+    display: block;
+    font-weight: bold;
+}
+#create-thread-form input[type="text"],
+#create-thread-form input[type="file"],
+#create-thread-form select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* paddingとborderをwidthに含める */
+}
+
+#create-thread-form label input[type="checkbox"] {
+    margin-right: 0.3rem;
+}
+
+#create-thread-form button[type="submit"]:hover {
+    background-color: #4cae4c;
+}
+
+
+/* フッター */
+footer {
+    text-align: center;
+    padding: 1rem 0;
+    background-color: #333;
+    color: #fff;
+    margin-top: 2rem;
+}
+
+/* タグ入力関連のスタイルは前回のものを参考にしてください */
+/* #custom-tags-input, .tag-count-info, #recommended-tags-select, */
+/* #add-custom-tag-button, #add-recommended-tag-button, */
+/* #selected-tags-display-container, .tag-chip, .remove-tag など */
+
+#selected-tags-display-container {
+    margin-top: 1rem;
+    padding: 1rem; /* 少し広めに */
+    border: 1px solid #e0e0e0; /* 実線に変更 */
+    border-radius: 4px;
+    min-height: 50px; /* タグがない場合もある程度の高さを確保 */
+    background-color: #f9f9f9; /* 背景色 */
+}
+
+#selected-tags-display-container p {
+    margin-top: 0;
+    margin-bottom: 0.8rem; /* 少し間隔をあける */
+    font-weight: bold;
+    color: #555;
+}
+
+.tag-chip {
+    display: inline-flex; /* バツ印を横に並べるため */
+    align-items: center; /* 中央揃え */
+    background-color: #007bff; /* Bootstrapのprimaryカラー風 */
+    color: white;
+    padding: 0.4rem 0.8rem;
+    margin-right: 0.6rem;
+    margin-bottom: 0.6rem;
+    border-radius: 20px;
+    font-size: 0.9em;
+    transition: background-color 0.2s;
+}
+.tag-chip:hover {
+    background-color: #0056b3; /* ホバー時の色 */
+}
+
+.tag-chip .remove-tag {
+    margin-left: 0.6rem;
+    color: #f0f0f0; /* 少し薄い色 */
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.1em; /* 少し大きく */
+    line-height: 1; /* 行の高さを調整 */
+}
+.tag-chip .remove-tag:hover {
+    color: #ffffff; /* ホバーで白く */
+}
+
+
+
+.tag-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+  }
+
+
+
+  /* style.css に追記 */
+
+/* アスキーアート倉庫ページ */
+.aa-registration-form div {
+    margin-bottom: 1rem;
+}
+.aa-registration-form label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-weight: bold;
+}
+.textarea input[type="text"]{
+    width: 100%; /* 親要素に合わせる */
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+
+.aa-registration-form button[type="submit"]:hover {
+    background-color: #4cae4c;
+}
+
+.aa-item {
+    border: 1px solid #e0e0e0;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+}
+.aa-item h4 {
+    margin-top: 0;
+}
+.aa-preview {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 0.5rem;
+    max-height: 200px; /* 高すぎると見づらいので制限 */
+    overflow-y: auto; /* はみ出た場合はスクロール */
+    white-space: pre; /* AAの空白を維持 */
+    font-family: "MS Gothic", "Osaka-mono", monospace; /* AAが見やすいフォント */
+    line-height: 1.2; /* AAの行間調整 */
+    word-break: break-all; /* 長い行でも折り返す */
+}
+.aa-actions button {
+    margin-right: 0.5rem;
+    padding: 0.3rem 0.6rem;
+    cursor: pointer;
+}
+.no-aa-message, .no-favorites-message {
+    text-align: center;
+    color: #777;
+    padding: 1rem;
+}
+
+
+/* お気に入りスレッド一覧ページ */
+.favorite-item {
+    position: relative; /* 削除ボタンの位置調整のため */
+    padding-right: 120px; /* 削除ボタンのスペース確保 (調整が必要) */
+}
+.favorite-actions {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+}
+.remove-favorite-button {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.remove-favorite-button:hover {
+    background-color: #c9302c;
+}
+
+/* スレッド一覧のスタイルを一部継承している前提 (.thread-itemなど) */
+
+
+/* --- code.css または style.css など --- */
+
+/* デフォルトのスタイル (広い画面向け) */
+#code-main {
+    display: flex; /* 横並びの基本 */
+    flex: 1;       /* 親要素の残りのスペースを埋める */
+    overflow: auto;
+height: 100vh;
+}
+
+#code-container {
+    flex: 1; /* 横並びの際、等分または指定比率で幅を取る */
+    height: 100%; /* 横並び時の高さいっぱい */
+    /* 必要に応じて min-width を設定 */
+}
+
+#code-preview {
+    flex: 1; /* 横並びの際、等分または指定比率で幅を取る */
+    border: none; /* HTMLから移動 */
+    height: 100%; /* 横並び時の高さいっぱい */
+    background-color: white; /* HTMLから移動 */
+    /* 必要に応じて min-width を設定 */
+}
+
+
+/* メディアクエリ (狭い画面向け - 例: 768px以下) */
+@media screen and (max-width: 768px) {
+    #code-main {
+        flex-direction: column; /* ★ 縦並びに変更 */
+        height: calc(100% - 50px); /* ★ コントロールバーの高さを引いた残り全部 (50pxは仮) */
+                                    /* #code-controls の実際の高さを測定して調整してください */
+    }
+
+    #code-container {
+        flex: 1; /* 縦並びの際、利用可能な高さを取る (半分にするなら flex-basis: 50%; など) */
+        width: 100%; /* 縦並びなので幅は100% */
+        height: 50%; /* ★ 高さを親要素の半分に (調整可能) */
+        min-height: 200px; /* 最低限の高さを確保 */
+    }
+
+    #code-preview {
+        flex: 1; /* 縦並びの際、利用可能な高さを取る */
+        width: 100%; /* 縦並びなので幅は100% */
+        height: 50%; /* ★ 高さを親要素の半分に (調整可能) */
+        border-top: 1px solid #ccc; /* 縦並び時の区切り線 (任意) */
+        min-height: 200px; /* 最低限の高さを確保 */
+    }
+}
+
+/* #code-display と #code-controls のスタイルも確認 */
+#code-display {
+    display: none; /* 初期非表示 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.5); /* 背景を少し暗くしてモーダル感を出す */
+    z-index: 1000; /* 他の要素より手前に表示 */
+}
+
+#code-controls {
+    padding: 5px;
+    background: #f0f0f0;
+    border-bottom: 1px solid #ccc;
+    box-sizing: border-box; /* paddingとborderを高さに含める */
+    overflow: auto;
+}

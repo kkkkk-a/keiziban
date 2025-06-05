@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>スレッド作成 - 掲示板</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="canvas.css">
+    <link rel="stylesheet" href="audio.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css"
+        integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP" crossorigin="anonymous">
+
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"
+        integrity="sha384-cMkvdD8LoxVzGF/RPUKAcvmm49FQ0oxwDF3BGKtDXcEc+T1b2N+teh/OJfpU0jr6"
+        crossorigin="anonymous"></script>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"
+        integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.4.1/math.min.js"></script>
+
+
+    <!-- Google Fonts (Noto Sans JP) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700;900&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..900&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Reggae+One&display=swap" rel="stylesheet">
+    <!-- QuillのCSS (Snowテーマ) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/quill/2.0.2/quill.snow.min.css" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.52.2/min/vs/loader.min.js" defer></script>
+    <script src="font.js" defer></script>
+    <style>
+        .ql-snow .ql-toolbar button,
+        .ql-snow.ql-toolbar button {
+            width: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>創作掲示板</h1>
+        <nav>
+            <a href="index.html">スレッド一覧</a>
+            <a href="create_thread.html">スレッド作成</a>
+            <!-- 他のナビゲーションリンク -->
+        </nav>
+    </header>
+
+    <main>
+        <h2>新しいスレッドを作成</h2>
+        <form id="create-thread-form" action="/api/threads/create" enctype="multipart/form-data" method="POST">
+
+            <div>
+                <label for="thread-title">スレッドタイトル(必須):</label>
+                <input type="text" id="thread-title" name="title">
+            </div>
+            <div>
+                <label for="thread-image">スレッド画像(必須):</label>
+                <input type="file" id="thread-image" name="image" accept="image/*">
+            </div>
+
+            <label for="thread-image">1レス目内容(必須):</label>
+            <div id="editor">
+            </div>
+
+
+            <div>
+                <label for="auto_archive_time">自動過去ログ化時間:</label>
+                <select id="auto_archive_time" name="auto_archive_time">
+                    <option value="6">6時間</option>
+                    <option value="12" selected>12時間 (デフォルト)</option>
+                    <option value="24">24時間</option>
+
+                    <option value="48">48時間</option>
+                </select>
+            </div>
+            <div>
+                <label for="max_responses">レス上限数:</label>
+                <select id="max_responses" name="max_responses">
+                    <option value="10">10</option>
+                    <option value="50">50</option>
+                    <option value="100" selected>100 (デフォルト)</option>
+                    <option value="200">200</option>
+                    <option value="500">500</option>
+                    <option value="1000">1000</option>
+                    <option value="5000">5000</option>
+                </select>
+            </div>
+
+
+
+            <div>
+                <label for="recommended-tags">推奨タグ(最大20個):</label>
+                <select id="recommended-tags" name="recommended_tags_select">
+                    <optgroup label="作品の種類">
+                        <option value="アニメ">アニメ</option>
+                        <option value="漫画">漫画</option>
+                        <option value="絵本">絵本</option>
+                        <option value="工作">工作</option>
+                        <option value="小説">小説</option>
+                        <option value="映画">映画</option>
+                        <option value="音楽">音楽</option>
+                        <option value="芸能">芸能</option>
+                        <option value="立体造形">立体造形</option>
+                        <option value="アート">アート</option>
+                        <option value="ダンス">ダンス</option>
+                        <option value="ゲーム">ゲーム</option>
+                        <option value="ソシャゲ">ソシャゲ</option>
+                        <option value="カードゲーム">カードゲーム</option>
+                        <option value="プログラム">プログラム</option>
+                        <option value="アスキーアート">アスキーアート</option>
+                        <option value="アナログ">アナログ</option>
+                        <option value="デジタル">デジタル</option>
+                        <option value="手作業">手作業</option>
+                        <option value="AI">AI</option>
+                        <option value="2D">2D</option>
+                        <option value="3D">3D</option>
+                        <option value="VR">VR</option>
+                        <option value="VTuber">VTuber</option>
+                    </optgroup>
+                    <optgroup label="物語のジャンル">
+                        <option value="RPG">RPG</option>
+                        <option value="TRPG">TRPG</option>
+                        <option value="ギャグ">ギャグ</option>
+                        <option value="ヒーロー">ヒーロー</option>
+                        <option value="サスペンス">サスペンス</option>
+                        <option value="ミステリー">ミステリー</option>
+                        <option value="ホラー">ホラー</option>
+                        <option value="デスゲーム">デスゲーム</option>
+                        <option value="バトルロイヤル">バトルロイヤル</option>
+                        <option value="ファンタジー">ファンタジー</option>
+                        <option value="ロボ">ロボ</option>
+                        <option value="ラブコメ">ラブコメ</option>
+                        <option value="日常">日常</option>
+                        <option value="アクション">アクション</option>
+                        <option value="スポーツ">スポーツ</option>
+                        <option value="アイドル">アイドル</option>
+                        <option value="ポストアポカリプス">ポストアポカリプス</option>
+                        <option value="ディストピア">ディストピア</option>
+                        <option value="サバイバル">サバイバル</option>
+                        <option value="カニバリズム">カニバリズム</option>
+                        <option value="ゾンビ">ゾンビ</option>
+                        <option value="クトゥルフ">クトゥルフ</option>
+                        <option value="サイバーパンク">サイバーパンク</option>
+                        <option value="タイムトラベル">タイムトラベル</option>
+                        <option value="ノンフィクション">ノンフィクション</option>
+                        <option value="メタフィクション">メタフィクション</option>
+                        <option value="学園">学園</option>
+                        <option value="料理">料理</option>
+                        <option value="政治">政治</option>
+                        <option value="宗教">宗教</option>
+                        <option value="科学">科学</option>
+                        <option value="医学">医学</option>
+                        <option value="宇宙">宇宙</option>
+                        <option value="怪獣">怪獣</option>
+                        <option value="異能">異能</option>
+                        <option value="格闘">格闘</option>
+                        <option value="冒険">冒険</option>
+                        <option value="追放">追放</option>
+                        <option value="戦争">戦争</option>
+                        <option value="犯罪">犯罪</option>
+                        <option value="群像劇">群像劇</option>
+                        <option value="転生転移">転生転移</option>
+                        <option value="成り上がり">成り上がり</option>
+                        <option value="if">if</option>
+                        <option value="クロスオーバー">クロスオーバー</option>
+                        <option value="デウス・エクス・マキナ">デウス・エクス・マキナ</option>
+                        <option value="ハーレム">ハーレム</option>
+                        <option value="NTR">NTR</option>
+                        <option value="純愛">純愛</option>
+                        <option value="強姦">強姦</option>
+                        <option value="異種姦">異種姦</option>
+                        <option value="近親相姦">近親相姦</option>
+                        <option value="ガールズラブ">ガールズラブ</option>
+                        <option value="ボーイズラブ">ボーイズラブ</option>
+                    </optgroup>
+                    <optgroup label="世界観">
+                        <option value="シェアワールド">シェアワールド</option>
+                        <option value="日本">日本</option>
+                        <option value="中華">中華</option>
+                        <option value="西洋">西洋</option>
+                        <option value="東洋">東洋</option>
+                        <option value="架空史">架空史</option>
+                        <option value="世界史">世界史</option>
+                        <option value="現代">現代</option>
+                        <option value="近世">近世</option>
+                        <option value="中世">中世</option>
+                        <option value="古代">古代</option>
+                        <option value="原始">原始</option>
+                        <option value="神話">神話</option>
+                        <option value="多次元">多次元</option>
+                        <option value="他惑星">他惑星</option>
+                        <option value="異世界">異世界</option>
+                    </optgroup>
+                    <optgroup label="創作の性質">
+                        <option value="一次創作">一次創作</option>
+                        <option value="二次創作">二次創作</option>
+                        <option value="三次創作">三次創作</option>
+                        <option value="女性向け">女性向け</option>
+                        <option value="男性向け">男性向け</option>
+                        <option value="シリーズもの">シリーズもの</option>
+                    </optgroup>
+                    <optgroup label="内容のレーティング">
+                        <option value="全年齢">全年齢</option>
+                        <option value="下ネタ">下ネタ</option>
+                        <option value="微エロ">微エロ</option>
+                        <option value="微グロ">微グロ</option>
+                        <option value="R18">R18</option>
+                        <option value="R18G">R18G</option>
+                    </optgroup>
+                    <optgroup label="ブランド">
+                        <option value="少年ジャンプ">少年ジャンプ</option>
+                        <option value="少年サンデー">少年サンデー</option>
+                        <option value="少年マガジン">少年マガジン</option>
+                        <option value="Fate">Fate</option>
+                        <option value="特撮">特撮</option>
+                        <option value="SCP">SCP</option>
+                        <option value="やる夫">やる夫</option>
+                        <option value="フロム">フロム</option>
+                        <option value="ソニー">ソニー</option>
+                        <option value="任天堂">任天堂</option>
+                    </optgroup>
+                    <optgroup label="その他">
+                        <option value="おすすめ教えて">おすすめ教えて</option>
+                        <option value="知識教えて">知識教えて</option>
+                        <option value="感想教えて">感想教えて</option>
+                        <option value="共感求む">共感求む</option>
+                        <option value="専門知識">専門知識</option>
+                        <option value="最強議論">最強議論</option>
+                        <option value="社会科学">社会科学</option>
+                        <option value="人文科学">人文科学</option>
+                        <option value="応用科学">応用科学</option>
+                        <option value="形式科学">形式科学</option>
+                        <option value="自然科学">自然科学</option>
+                        <option value="独自設定">独自設定</option>
+                        <option value="性転換">性転換</option>
+                        <option value="社会人">社会人</option>
+                        <option value="初めて">初めて</option>
+                        <option value="卒業">卒業</option>
+                        <option value="脳死">脳死</option>
+                        <option value="雑談">雑談</option>
+                        <option value="質問">質問</option>
+                        <option value="考察">考察</option>
+                        <option value="打線">打線</option>
+                        <option value="対戦">対戦</option>
+                        <option value="動物">動物</option>
+                        <option value="変態">変態</option>
+                        <option value="性癖">性癖</option>
+                        <option value="偉人">偉人</option>
+                        <option value="奇跡">奇跡</option>
+                        <option value="警告">警告</option>
+                        <option value="急募">急募</option>
+                        <option value="曇らせ">曇らせ</option>
+                        <option value="安価">安価</option>
+                        <option value="実況">実況</option>
+                        <option value="あんこ">あんこ</option>
+                        <option value="ダイス">ダイス</option>
+                        <option value="オリキャラ">オリキャラ</option>
+                        <option value="レビュー">レビュー</option>
+                        <option value="パソコン">パソコン</option>
+                        <option value="テスト">テスト</option>
+                        <option value="コラボ">コラボ</option>
+                        <option value="ガチャ">ガチャ</option>
+                        <option value="パロディ">パロディ</option>
+                        <option value="コラージュ">コラージュ</option>
+                        <option value="ネットミーム">ネットミーム</option>
+                        <option value="ネタバレ注意">ネタバレ注意</option>
+                        <option value="俺TUEEE">俺TUEEE</option>
+                        <option value="俺YOEEE">俺YOEEE</option </optgroup>
+
+                </select>
+                <button type="button" onclick="recommendATagAdd(this)" id="recommendTagButton">推奨タグを追加</button>
+                <button type="button" onclick="pickRandom(this)" id="recommendTagRandomButton">ランダム追加</button>
+            </div>
+
+            <div>
+                <label for="tagAddButton">自由記述タグ(最大20個):</label>
+                <button id="tagAddButton" onclick="tagAdd(this)" type="button">タグを追加</button>
+                <div id="inputContainer"></div>
+            </div>
+
+            <button type="submit">スレッドを作成</button>
+        </form>
+    </main>
+
+    <footer>
+        <p>© 2024 あなたの掲示板</p>
+    </footer>
+    <div id="code-display">
+        <div id="code-controls">
+            <select id="code-templateSelect">
+                <option value="minimum">最低限テンプレート</option>
+                <option value="basic">基本テンプレート</option>
+                <option value="bootstrap">Bootstrap活用テンプレート</option>
+                <option value="tailwind">Tailwind CSS テンプレート</option>
+                <option value="simpleLayout">シンプルレイアウト (Flexbox)</option>
+                <option value="interactiveJs">JavaScriptインタラクション</option>
+                <option value="animationJs">JavaScriptアニメーション</option>
+                <option value="cssAnimation">CSSアニメーション</option>
+                <option value="formExample">フォームの例</option>
+                <option value="pyscriptCalculator">PyScript 電卓</option>
+                <option value="pyscriptBasic">PyScript 基本操作</option>
+                <option value="mediaElements">メディア要素 (画像/音声/動画)</option>
+            </select>
+            <button onclick="codeEmbedded()">埋め込み</button>
+            <button onclick="codeDisplay()">キャンセル</button>
+        </div>
+
+        <div id="code-main">
+            <div id="code-container"></div>
+            <iframe id="code-preview"></iframe>
+        </div>
+    </div>
+
+
+    <div id="canvas-display">
+
+        <div class="controls-panel">
+            <div class="control-group">
+                <legend>表示と操作</legend>
+                <div class="history-controls">
+                    <button id="undo-btn" title="元に戻す (Ctrl+Z)">↩️ 戻る</button>
+                    <button id="redo-btn" title="やり直す (Ctrl+Y)">↪️ 進む</button>
+                    <button onclick="canvasDisplay()">キャンセル</button>
+                </div>
+                <div class="grid-options">
+                    <label id="show-grid-checkbox-label"><input type="checkbox" id="show-grid-checkbox" />グリッド表示</label>
+                    <label for="grid-spacing-input">間隔:</label>
+                    <input type="number" id="grid-spacing-input" value="50" min="5" step="5" class="size-input" />px
+                    <label for="grid-angle-slider">回転:</label>
+                    <input type="range" id="grid-angle-slider" min="0" max="359" value="0" /><span
+                        id="grid-angle-value">0</span>°
+                </div>
+            </div>
+            <div class="control-group">
+                <legend>共通ツール</legend>
+                <div class="toolbar">
+                    <label id="color-picker-label">色: <input type="color" id="color-picker" value="#000000" /></label>
+                    <label id="thickness-label">太さ/サイズ: <input type="range" id="thickness" min="1" max="100"
+                            value="10" /> <span id="thickness-value">10</span>px</label>
+                    <label>モード:
+                        <select id="mode-select">
+                            <option value="pen" selected>ペン</option>
+                            <option value="eraser">消しゴム</option>
+                            <option value="text">文字</option>
+                            <option value="line">直線</option>
+                            <option value="ellipse">楕円</option>
+                            <option value="rectangle">長方形</option>
+                            <option value="triangle">三角形</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="text-options" id="text-options-container" style="display: none;">
+                    <label>文字入力: <input type="text" id="text-input-field" placeholder="描画したい文字" /></label>
+                    <label for="font-family-select">フォント:</label>
+                    <select id="font-family-select">
+                        <option value="sans-serif" selected>ゴシック (sans-serif)</option>
+                        <option value="serif">明朝 (serif)</option>
+                        <option value="monospace">等幅 (monospace)</option>
+                        <option value="Arial, sans-serif">Arial</option>
+                        <option value="Times New Roman, serif">Times New Roman</option>
+                        <option value="Courier New, monospace">Courier New</option>
+                        <option value="メイリオ, Meiryo, sans-serif">メイリオ</option>
+                        <option value="MS PGothic, sans-serif">MS PGothic</option>
+                        <option value="MS PMincho, serif">MS PMincho</option>
+                    </select>
+                    <label id="vertical-text-checkbox-label"><input type="checkbox"
+                            id="vertical-text-checkbox" />縦書き</label>
+                </div>
+                <div class="shape-options" id="shape-options-container" style="display: none;">
+                    <label id="fill-shape-checkbox-label"><input type="checkbox"
+                            id="fill-shape-checkbox" />図形を塗りつぶす</label>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <legend>キャンバス</legend>
+                <div class="canvas-size-controls">
+                    <label>幅: <input type="number" id="canvas-width-input" class="size-input" value="800" min="50"
+                            step="10" /></label>
+                    <label>高さ: <input type="number" id="canvas-height-input" class="size-input" value="500" min="50"
+                            step="10" /></label>
+                    <button id="resize-canvas-btn">🔄 サイズ変更</button><span class="help-text">(描画クリア)</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <legend>ファイル</legend>
+                <div class="save-options-group">
+                    <button id="save-btn">💾 保存</button>
+                    <label for="save-format-select">形式:</label>
+                    <select id="save-format-select">
+                        <option value="png" selected>PNG</option>
+                        <option value="jpeg">JPEG</option>
+                        <option value="webp">WEBP</option>
+                    </select>
+                    <div id="quality-control-container" style="display: none;">
+                        <label for="quality-slider">品質:</label>
+                        <input type="range" id="quality-slider" min="0.1" max="1.0" step="0.05" value="0.9" />
+                        <span id="quality-value">0.90</span>
+                    </div>
+                </div>
+                <button id="clear-btn">🧼 全クリア</button>
+                <button id="add-layer-btn">➕ レイヤー追加</button>
+            </div>
+
+            <div class="control-group">
+                <legend>背景</legend>
+                <div class="bg-image-options">
+                    <label>画像: <input type="file" id="bg-upload" accept="image/*" /></label>
+                    <div><input type="radio" id="bg-fit-canvas" name="bg-load-option" value="fit_to_canvas"
+                            checked /><label for="bg-fit-canvas">画像をキャンバスに</label></div>
+                    <div><input type="radio" id="bg-resize-canvas" name="bg-load-option"
+                            value="resize_canvas_to_image" /><label for="bg-resize-canvas">キャンバスを画像に</label></div>
+                </div>
+                <div style="display: flex;">
+                <button id="clear-bg-image-btn" title="背景画像をクリアして背景色に戻します">背景画像クリア</button>
+                <label style="margin-left: 10px;">背景色: <input type="color" id="bg-color-picker"
+                        value="#FFFFFF" /></label>
+                <label style="margin-left: 10px;">不透明度: <input type="range" id="bg-opacity" class="opacity-slider" min="0" max="1" step="0.01"
+                        value="1" /> <span id="bg-opacity-value">1.00</span></label>
+                        </div>
+            </div>
+        </div>
+
+
+    <div class="layers-panel">
+        <h3>レイヤー</h3>
+        <div id="layer-list"></div>
+    </div>
+    <div class="canvas-container-wrapper"style="margin-bottom:50px">
+        <div class="canvas-container" id="canvas-container">
+            <!-- グリッドキャンバスはJSでここに追加 -->
+        </div>
+    </div>
+    </div>
+</div>
+
+
+<div id="audio-display">
+    <div class="fixed-操作パネル">  <!-- ★ 全体を囲む固定パネル -->
+        <input type="number" id="master-bpm" value="120" min="30" max="300" step="1"><!-- エラー起こすから消せないやつ -->
+        <div class="fixed-panel-header">
+            <button onclick="audioDisplay()" class="cancel-button">キャンセル</button>
+            <button id="master-stop-button" aria-label="Master Stop">■ 全体停止</button>
+        </div>
+    
+        <div class="fixed-panel-content">
+            <div class="fixed-panel-section recording-section"> <!-- ★ 録音系セクション (左側) -->
+                    <div class="audio-control-group" style="flex-direction:row; gap:10px; align-items:flex-end;">
+                        <button id="start-record-button" aria-label="Start Recording">録音開始</button>
+                        <button id="stop-record-button" disabled="" aria-label="Stop Recording">録音停止</button>
+                    </div>
+                    <div class="audio-control-group" id="mic-control-group">
+                        <button id="toggle-mic-button" aria-label="Toggle Microphone">マイクOFF</button>
+                        <label for="mic-gain" style="margin-left:5px;">音量: </label>
+                        <input type="range" id="mic-gain" min="0" max="2" step="0.1" value="1" title="マイク入力ゲイン"
+                            disabled="" style="width:80px;">
+                    </div>
+                <div id="download-area" style="margin-top: 10px;"></div>
+            </div>
+
+        </div>
+    
+    </div>
+
+    <div id="main-content-area">
+        <div id="left-panels">
+            <div class="panel" id="main-controls">
+                <div class="control-section">
+                    <h3>鍵盤楽器設定</h3>
+                    <div class="audio-control-grid">
+                        <div class="audio-control-group"><label for="instrument-selector">音色:</label><select
+                                id="instrument-selector" aria-label="Instrument Selector">
+                                <option value="piano">ピアノ</option>
+                                <option value="guitar_simple">ギター風</option>
+                                <option value="flute_simple">フルート風</option>
+                                <option value="synth_bass">シンセベース</option>
+                                <option value="synth_lead_saw">シンセリード(Saw)</option>
+                                <option value="synth_lead_square">シンセリード(Square)</option>
+                                <option value="sub_bass">サブベース</option>
+                            </select></div>
+                        <div class="audio-control-group"><label for="octave-selector">オクターブ:</label><select
+                                id="octave-selector" aria-label="Octave Selector">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4" selected="">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                            </select></div>
+                        <div class="audio-control-group"><label for="waveform-selector" id="waveform-label">波形 (ピアノ)</label><select id="waveform-selector"
+                                aria-label="Waveform Selector">
+                                <option value="sine">サイン波</option>
+                                <option value="square">矩形波</option>
+                                <option value="sawtooth">ノコギリ波</option>
+                                <option value="triangle" selected="">三角波</option>
+                            </select></div>
+                        <div class="audio-control-group"><label for="articulation-selector">アーティキュレーション:</label><select
+                                id="articulation-selector" aria-label="Articulation Selector">
+                                <option value="normal" selected="">ノーマル</option>
+                                <option value="staccato">スタッカート</option>
+                                <option value="legato">レガート</option>
+                                <option value="crescendo">クレッシェンド</option>
+                                <option value="decrescendo">デクレッシェンド</option>
+                            </select></div>
+                    </div>
+                    <div class="lfo-controls" id="instrument-lfo-controls" style="display:none;">
+                        <h3>LFO (選択音色)</h3>
+                        <div class="audio-control-grid">
+                            <div class="audio-control-group"><label class="checkbox-label"><input type="checkbox"
+                                        id="lfo-active" aria-label="LFO Active"> LFO有効</label></div>
+                            <div class="audio-control-group"><label for="lfo-waveform">波形:</label><select
+                                    id="lfo-waveform" aria-label="LFO Waveform">
+                                    <option value="sine">Sine</option>
+                                    <option value="square">Square</option>
+                                    <option value="sawtooth">Sawtooth</option>
+                                    <option value="triangle">Triangle</option>
+                                </select></div>
+                            <div class="audio-control-group"><label for="lfo-rate">Rate(Hz):</label><input type="range"
+                                    id="lfo-rate" min="0.1" max="20" step="0.1" value="5"
+                                    aria-label="LFO Rate"><span id="lfo-rate-value">5.0Hz</span></div>
+                            <div class="audio-control-group"><label for="lfo-depth">Depth:</label><input type="range"
+                                    id="lfo-depth" min="0" max="1000" step="1" value="10"
+                                    aria-label="LFO Depth"><span id="lfo-depth-value">10</span></div>
+                            <div class="audio-control-group"><label for="lfo-target">Target:</label><select
+                                    id="lfo-target" aria-label="LFO Target">
+                                    <option value="pitch">Pitch (Detune)</option>
+                                    <option value="filter_freq">Filter Freq</option>
+                                    <option value="amplitude">Amplitude</option>
+                                </select></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-section">
+                    <h3>コード・アルペジオ</h3>
+                    <div class="audio-control-grid">
+                        <div class="audio-control-group"><label for="root-note-selector">ルート音:</label><select
+                                id="root-note-selector" aria-label="Root Note">
+                                <option value="C">C</option>
+                                <option value="C#">C#</option>
+                                <option value="D">D</option>
+                                <option value="D#">D#</option>
+                                <option value="E">E</option>
+                                <option value="F">F</option>
+                                <option value="F#">F#</option>
+                                <option value="G">G</option>
+                                <option value="G#">G#</option>
+                                <option value="A">A</option>
+                                <option value="A#">A#</option>
+                                <option value="B">B</option>
+                            </select></div>
+                        <div class="audio-control-group"><label for="chord-type-selector">コードタイプ:</label><select
+                                id="chord-type-selector" aria-label="Chord Type">
+                                <optgroup label="Triads">
+                                    <option value="major">メジャー</option>
+                                    <option value="minor">マイナー</option>
+                                    <option value="diminished">ディミニッシュ</option>
+                                    <option value="augmented">オーギュメント</option>
+                                </optgroup>
+                                <optgroup label="7th Chords">
+                                    <option value="major7">メジャー7th</option>
+                                    <option value="minor7">マイナー7th</option>
+                                    <option value="dominant7">ドミナント7th</option>
+                                    <option value="diminished7">ディミニッシュ7th</option>
+                                    <option value="half_diminished7">ハーフディミニッシュ7th</option>
+                                </optgroup>
+                                <optgroup label="Tensions (9th)">
+                                    <option value="major9">Major 9th</option>
+                                    <option value="minor9">Minor 9th</option>
+                                    <option value="dominant9">Dominant 9th</option>
+                                </optgroup>
+                            </select></div>
+                        <div class="audio-control-group"><label for="inversion-selector">転回形:</label><select
+                                id="inversion-selector" aria-label="Chord Inversion">
+                                <option value="0">基本形</option>
+                                <option value="1">第1</option>
+                                <option value="2">第2</option>
+                                <option value="3">第3</option>
+                            </select><span class="info-text">音数で適用可否変化</span></div>
+                        <div class="audio-control-group" style="justify-content: flex-end;"><button id="play-chord-button"
+                                aria-label="Play Chord">コード演奏</button></div>
+                    </div>
+                    <div class="audio-control-grid" style="margin-top:10px;">
+                        <div class="audio-control-group"><label for="arpeggio-bpm">アルペジオBPM:</label><input type="number"
+                                id="arpeggio-bpm" value="120" min="30" max="300" step="10" style="width: 80px;"
+                                aria-label="Arpeggio BPM"></div>
+                        <div class="audio-control-group"><label for="arpeggio-pattern">アルペジオパターン:</label><select
+                                id="arpeggio-pattern" aria-label="Arpeggio Pattern">
+                                <option value="up">上昇</option>
+                                <option value="down">下降</option>
+                                <option value="up_down">上昇&amp;下降</option>
+                                <option value="random">ランダム</option>
+                            </select></div>
+                        <div class="audio-control-group" style="flex-direction:row; gap:8px; align-items:flex-end;">
+                            <button id="play-arpeggio-button" aria-label="Play Arpeggio">アルペジオ演奏</button> <button
+                                id="stop-arpeggio-button" aria-label="Stop Arpeggio">停止</button> </div>
+                    </div>
+                </div>
+                <div class="control-section">
+                    <h3>スケール・モード</h3>
+                    <div class="control-grid">
+                        <div class="audio-control-group"><label for="scale-mode-selector">表示スケール/モード:</label><select
+                                id="scale-mode-selector" aria-label="Scale/Mode Selector">
+                                <optgroup label="Diatonic">
+                                    <option value="major_scale">メジャースケール</option>
+                                    <option value="natural_minor_scale">ナチュラルマイナー</option>
+                                </optgroup>
+                                <optgroup label="Modes">
+                                    <option value="ionian_mode">Ionian</option>
+                                    <option value="dorian_mode">Dorian</option>
+                                    <option value="phrygian_mode">Phrygian</option>
+                                    <option value="lydian_mode">Lydian</option>
+                                    <option value="mixolydian_mode">Mixolydian</option>
+                                    <option value="aeolian_mode">Aeolian</option>
+                                    <option value="locrian_mode">Locrian</option>
+                                </optgroup>
+                                <optgroup label="Other">
+                                    <option value="harmonic_minor_scale">ハーモニックマイナー</option>
+                                    <option value="melodic_minor_scale_asc">メロディックマイナー(Asc)</option>
+                                    <option value="pentatonic_major">ペンタメジャー</option>
+                                    <option value="pentatonic_minor">ペンタマイナー</option>
+                                    <option value="whole_tone">ホールトーン</option>
+                                    <option value="chromatic_scale">クロマチック</option>
+                                </optgroup>
+                            </select></div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel" id="piano-wrapper">
+                <div id="piano-container" class="piano" aria-label="Virtual Keyboard">
+                    <div class="key white scale-highlight" data-note="C4" data-note-base="C"
+                        aria-label="Play note C4">C4</div>
+                    <div class="key black" data-note="C#4" data-note-base="C#" aria-label="Play note C#4">C♯4</div>
+                    <div class="key white scale-highlight" data-note="D4" data-note-base="D"
+                        aria-label="Play note D4">D4</div>
+                    <div class="key black" data-note="D#4" data-note-base="D#" aria-label="Play note D#4">D♯4</div>
+                    <div class="key white scale-highlight" data-note="E4" data-note-base="E"
+                        aria-label="Play note E4">E4</div>
+                    <div class="key white scale-highlight" data-note="F4" data-note-base="F"
+                        aria-label="Play note F4">F4</div>
+                    <div class="key black" data-note="F#4" data-note-base="F#" aria-label="Play note F#4">F♯4</div>
+                    <div class="key white scale-highlight" data-note="G4" data-note-base="G"
+                        aria-label="Play note G4">G4</div>
+                    <div class="key black" data-note="G#4" data-note-base="G#" aria-label="Play note G#4">G♯4</div>
+                    <div class="key white scale-highlight" data-note="A4" data-note-base="A"
+                        aria-label="Play note A4">A4</div>
+                    <div class="key black" data-note="A#4" data-note-base="A#" aria-label="Play note A#4">A♯4</div>
+                    <div class="key white scale-highlight" data-note="B4" data-note-base="B"
+                        aria-label="Play note B4">B4</div>
+                    <div class="key white scale-highlight" data-note="C5" data-note-base="C"
+                        aria-label="Play note C5">C5</div>
+                    <div class="key white scale-highlight" data-note="C5" data-note-base="C"
+                        aria-label="Play note C5">C5</div>
+                    <div class="key black" data-note="C#5" data-note-base="C#" aria-label="Play note C#5">C♯5</div>
+                    <div class="key white scale-highlight" data-note="D5" data-note-base="D"
+                        aria-label="Play note D5">D5</div>
+                    <div class="key black" data-note="D#5" data-note-base="D#" aria-label="Play note D#5">D♯5</div>
+                    <div class="key white scale-highlight" data-note="E5" data-note-base="E"
+                        aria-label="Play note E5">E5</div>
+                    <div class="key white scale-highlight" data-note="F5" data-note-base="F"
+                        aria-label="Play note F5">F5</div>
+                    <div class="key black" data-note="F#5" data-note-base="F#" aria-label="Play note F#5">F♯5</div>
+                    <div class="key white scale-highlight" data-note="G5" data-note-base="G"
+                        aria-label="Play note G5">G5</div>
+                    <div class="key black" data-note="G#5" data-note-base="G#" aria-label="Play note G#5">G♯5</div>
+                    <div class="key white scale-highlight" data-note="A5" data-note-base="A"
+                        aria-label="Play note A5">A5</div>
+                    <div class="key black" data-note="A#5" data-note-base="A#" aria-label="Play note A#5">A♯5</div>
+                    <div class="key white scale-highlight" data-note="B5" data-note-base="B"
+                        aria-label="Play note B5">B5</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="center-panel-area">
+            <div class="panel" id="sequencer-panel">
+                <h2>マルチトラックシーケンサー (16ステップ)</h2>
+                <div class="sequencer-controls audio-control-group"
+                    style="flex-direction:row; align-items:center; gap:15px; margin-bottom:10px;">
+                    <label for="sequencer-bpm-display" style="margin-bottom:0;">BPM (Master):</label>
+                    <input type="number" id="sequencer-bpm-display" value="120" style="width:70px" readonly=""
+                        title="マスターBPMと同期">
+                    <button id="toggle-sequencer-button" aria-label="Toggle Sequencer">シーケンサー開始</button>
+                </div>
+                <div id="sequencer-tracks">
+                    <div class="sequencer-track">
+                        <div class="track-header"><span class="track-name"
+                                style="color: rgb(229, 57, 53);">Kick</span>
+                            <div class="track-controls-mini"><button title="Mute/Unmute Track">Mute</button><button
+                                    title="Solo/Unsolo Track">Solo</button></div>
+                        </div>
+                        <div class="step-sequencer-grid" data-track-index="0"><button class="step-button"
+                                data-step="0"></button><button class="step-button" data-step="1"></button><button
+                                class="step-button" data-step="2"></button><button class="step-button"
+                                data-step="3"></button><button class="step-button" data-step="4"></button><button
+                                class="step-button" data-step="5"></button><button class="step-button"
+                                data-step="6"></button><button class="step-button" data-step="7"></button><button
+                                class="step-button" data-step="8"></button><button class="step-button"
+                                data-step="9"></button><button class="step-button" data-step="10"></button><button
+                                class="step-button" data-step="11"></button><button class="step-button"
+                                data-step="12"></button><button class="step-button" data-step="13"></button><button
+                                class="step-button" data-step="14"></button><button class="step-button"
+                                data-step="15"></button></div>
+                    </div>
+                    <div class="sequencer-track">
+                        <div class="track-header"><span class="track-name"
+                                style="color: rgb(30, 136, 229);">Snare</span>
+                            <div class="track-controls-mini"><button title="Mute/Unmute Track">Mute</button><button
+                                    title="Solo/Unsolo Track">Solo</button></div>
+                        </div>
+                        <div class="step-sequencer-grid" data-track-index="1"><button class="step-button"
+                                data-step="0"></button><button class="step-button" data-step="1"></button><button
+                                class="step-button" data-step="2"></button><button class="step-button"
+                                data-step="3"></button><button class="step-button" data-step="4"></button><button
+                                class="step-button" data-step="5"></button><button class="step-button"
+                                data-step="6"></button><button class="step-button" data-step="7"></button><button
+                                class="step-button" data-step="8"></button><button class="step-button"
+                                data-step="9"></button><button class="step-button" data-step="10"></button><button
+                                class="step-button" data-step="11"></button><button class="step-button"
+                                data-step="12"></button><button class="step-button" data-step="13"></button><button
+                                class="step-button" data-step="14"></button><button class="step-button"
+                                data-step="15"></button></div>
+                    </div>
+                    <div class="sequencer-track">
+                        <div class="track-header"><span class="track-name"
+                                style="color: rgb(67, 160, 71);">HiHat</span>
+                            <div class="track-controls-mini"><button title="Mute/Unmute Track">Mute</button><button
+                                    title="Solo/Unsolo Track">Solo</button></div>
+                        </div>
+                        <div class="step-sequencer-grid" data-track-index="2"><button class="step-button"
+                                data-step="0"></button><button class="step-button" data-step="1"></button><button
+                                class="step-button" data-step="2"></button><button class="step-button"
+                                data-step="3"></button><button class="step-button" data-step="4"></button><button
+                                class="step-button" data-step="5"></button><button class="step-button"
+                                data-step="6"></button><button class="step-button" data-step="7"></button><button
+                                class="step-button" data-step="8"></button><button class="step-button"
+                                data-step="9"></button><button class="step-button" data-step="10"></button><button
+                                class="step-button" data-step="11"></button><button class="step-button"
+                                data-step="12"></button><button class="step-button" data-step="13"></button><button
+                                class="step-button" data-step="14"></button><button class="step-button"
+                                data-step="15"></button></div>
+                    </div>
+                    <div class="sequencer-track">
+                        <div class="track-header"><span class="track-name"
+                                style="color: rgb(253, 216, 53);">Bass:C2</span>
+                            <div class="track-controls-mini"><button title="Mute/Unmute Track">Mute</button><button
+                                    title="Solo/Unsolo Track">Solo</button></div>
+                        </div>
+                        <div class="step-sequencer-grid" data-track-index="3"><button class="step-button"
+                                data-step="0"></button><button class="step-button" data-step="1"></button><button
+                                class="step-button" data-step="2"></button><button class="step-button"
+                                data-step="3"></button><button class="step-button" data-step="4"></button><button
+                                class="step-button" data-step="5"></button><button class="step-button"
+                                data-step="6"></button><button class="step-button" data-step="7"></button><button
+                                class="step-button" data-step="8"></button><button class="step-button"
+                                data-step="9"></button><button class="step-button" data-step="10"></button><button
+                                class="step-button" data-step="11"></button><button class="step-button"
+                                data-step="12"></button><button class="step-button" data-step="13"></button><button
+                                class="step-button" data-step="14"></button><button class="step-button"
+                                data-step="15"></button></div>
+                    </div>
+                </div>
+                <div class="info-text" style="margin-top:10px;">トラック名クリックで音色・ピッチ編集 (Bass/Lead)。</div>
+            </div>
+        </div>
+
+        <div id="right-panels">
+            <div class="panel drum-machine">
+                <h2>ドラムパッド</h2>
+                <div class="pads-grid" id="drum-pads" aria-label="Drum Pads">
+                    <button class="pad" data-drum="kick">Kick</button> <button class="pad"
+                        data-drum="snare">Snare</button>
+                    <button class="pad" data-drum="hihat_closed">Hat(C)</button> <button class="pad"
+                        data-drum="hihat_open">Hat(O)</button>
+                    <button class="pad" data-drum="clap">Clap</button> <button class="pad"
+                        data-drum="tom_low">Tom</button>
+                    <button class="pad" data-drum="cymbal_crash">Crash</button> <button class="pad"
+                        data-drum="cymbal_ride">Ride
+                    </button>
+                </div>
+            </div>
+            <div class="panel noise-generator">
+                <h2>ノイズFX</h2>
+                <div class="control-grid noise-controls">
+                    <div class="audio-control-group"> <label for="noise-type-selector">タイプ:</label> <select
+                            id="noise-type-selector" aria-label="Noise Type">
+                            <option value="white">ホワイト</option>
+                            <option value="pink">ピンク</option>
+                            <option value="brown">ブラウン</option>
+                        </select> </div>
+                    <div class="audio-control-group"> <label for="noise-duration">持続(秒):</label> <input type="number"
+                            id="noise-duration" value="0.5" min="0.1" max="5" step="0.1" style="width: 70px;"
+                            aria-label="Noise Duration"> </div>
+                    <div class="audio-control-group"> <label for="noise-filter-cutoff">LPF(Hz):</label> <input
+                            type="range" id="noise-filter-cutoff" min="20" max="20000" value="20000" step="10"
+                            aria-label="Noise Filter Cutoff"> <span id="noise-filter-cutoff-value">20000</span>
+                    </div>
+                    <div class="audio-control-group" style="justify-content: flex-end;"><button id="play-noise-button"
+                            aria-label="Play Noise">再生</button></div>
+                </div>
+            </div>
+            <div class="panel" id="master-effects-panel">
+                <h2>マスターエフェクト</h2>
+                <div class="effect-chain">
+                    <div class="effect-module">
+                        <h4>フィルター</h4>
+                        <label class="checkbox-label effect-bypass-label"><input type="checkbox"
+                                id="master-filter-bypass" aria-label="Bypass Master Filter"> バイパス</label>
+                        <div class="control-grid">
+                            <div class="audio-control-group"><label for="master-filter-type">タイプ:</label><select
+                                    id="master-filter-type" aria-label="Master Filter Type">
+                                    <option value="lowpass">ローパス</option>
+                                    <option value="highpass">ハイパス</option>
+                                    <option value="bandpass">バンドパス</option>
+                                    <option value="notch">ノッチ</option>
+                                    <option value="peaking">ピーキング</option>
+                                    <option value="lowshelf">ローシェルフ</option>
+                                    <option value="highshelf">ハイシェルフ</option>
+                                </select></div>
+                            <div class="audio-control-group"><label for="master-filter-freq">周波数(Hz):</label><input
+                                    type="range" id="master-filter-freq" min="20" max="20000" value="5000"
+                                    step="10" aria-label="Master Filter Frequency"><span
+                                    id="master-filter-freq-value">5000Hz</span></div>
+                            <div class="audio-control-group"><label for="master-filter-q">Q:</label><input type="range"
+                                    id="master-filter-q" min="0.1" max="30" value="1" step="0.1"
+                                    aria-label="Master Filter Q"><span id="master-filter-q-value">1.0</span></div>
+                            <div class="audio-control-group"><label for="master-filter-gain">ゲイン(dB):</label><input
+                                    type="range" id="master-filter-gain" min="-24" max="24" value="0" step="0.5"
+                                    disabled="" aria-label="Master Filter Gain"><span
+                                    id="master-filter-gain-value">0.0dB</span></div>
+                        </div>
+                    </div>
+                    <div class="effect-module">
+                        <h4>ディレイ</h4>
+                        <label class="checkbox-label effect-bypass-label"><input type="checkbox"
+                                id="master-delay-bypass" aria-label="Bypass Master Delay"> バイパス</label>
+                        <div class="control-grid">
+                            <div class="audio-control-group"><label for="master-delay-time">タイム(s):</label><input
+                                    type="range" id="master-delay-time" min="0" max="1" value="0.3" step="0.01"
+                                    aria-label="Master Delay Time"><span id="master-delay-time-value">0.30s</span>
+                            </div>
+                            <div class="audio-control-group"><label for="master-delay-feedback">フィードバック:</label><input
+                                    type="range" id="master-delay-feedback" min="0" max="0.95" value="0.4"
+                                    step="0.01" aria-label="Master Delay Feedback"><span
+                                    id="master-delay-feedback-value">0.40</span></div>
+                            <div class="audio-control-group"><label for="master-delay-wet">ウェット:</label><input
+                                    type="range" id="master-delay-wet" min="0" max="1" value="0.3" step="0.01"
+                                    aria-label="Master Delay Wet Level"><span
+                                    id="master-delay-wet-value">0.30</span></div>
+                        </div>
+                    </div>
+                    <div class="effect-module">
+                        <h4>サイドチェイン (Kickトリガー)</h4>
+                        <div class="control-grid">
+                            <div class="audio-control-group"> <label for="sidechain-target">対象:</label> <select
+                                    id="sidechain-target" aria-label="Sidechain Target">
+                                    <option value="none">なし</option>
+                                    <option value="synth_bass">シンセベース</option>
+                                    <option value="sub_bass">サブベース</option>
+                                    <option value="synth_lead_saw">リード(Saw)</option>
+                                    <option value="synth_lead_square">リード(Square)</option>
+                                    <option value="bgm_all">BGM全体</option>
+                                </select> </div>
+                            <div class="audio-control-group"> <label for="sidechain-amount">深さ:</label> <input
+                                    type="range" id="sidechain-amount" min="0" max="1" step="0.05" value="0.7"
+                                    aria-label="Sidechain Amount"> <span class="info-text"
+                                    id="sidechain-amount-value">0.70</span> </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel" id="bgm-section">
+                <h2>BGM</h2>
+                <div class="audio-control-group"> <label for="bgm-file-input">BGMファイル (複数選択可):</label> <input type="file"
+                        id="bgm-file-input" accept="audio/*" multiple="" aria-label="BGM File Input"> </div>
+                <div class="audio-control-group" id="bgm-playlist-container"
+                    style="display:none; width: 100%; margin-top:10px;"> <label>BGMプレイリスト:</label>
+                    <ul id="bgm-playlist" aria-label="BGM Playlist"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p id="status" aria-live="polite">オーディオが有効になりました。</p> <!-- aria-liveでステータス変更を読み上げ -->
+    <div id="instructions"style="margin-bottom:300px">
+        <ul>
+            <li><strong>オーディオ有効化:</strong> 最初にページ上のどこかをクリックしてください。</li>
+            <li><strong>基本設定:</strong> 左上のパネルで楽器、オクターブ、波形(ピアノ時)、アーティキュレーションを選択。</li>
+            <li><strong>鍵盤演奏:</strong> ピアノ鍵盤をクリックすると単音が鳴ります。</li>
+            <li><strong>ドラムマシン:</strong> 右上のパネルのパッドをクリックするとドラム音が鳴ります。</li>
+            <li><strong>ノイズ生成:</strong> ノイズタイプ、持続時間、フィルターカットオフを設定し「ノイズ再生」。</li>
+            <li><strong>コード演奏:</strong> ルート音、コードタイプ、転回形を選択し「コード演奏」。</li>
+            <li><strong>アルペジオ演奏:</strong> コード設定後、BPMとパターンを選択し「アルペジオ演奏」。</li>
+            <li><strong>スケール/モード表示:</strong> ルート音とスケール/モードを選択し「表示切替」。</li>
+            <li><strong>BGM:</strong> 「BGMファイル」から複数ファイルを選択可。リストの曲名横のボタンで再生/一時停止、削除。各曲のループ、音量、ピッチ(再生速度)を調整できます。複数同時再生も可能です。</li>
+            <li><strong>録音:</strong> 「録音開始」で全ての音を録音、「録音停止」で終了。録音後、WebM, WAV, MP3形式でDL可。</li>
+        </ul>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quill/2.0.2/quill.min.js"></script>
+
+    <script src="canvas.js"></script>
+    <script src="audio.js"></script>
+    <script src="quill.js"></script>
+    <script src="code.js" defer></script>
+
+    <script src="tag.js"></script>
+    <script>
+
+
+
+    </script>
+</body>
+
+</html>
