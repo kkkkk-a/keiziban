@@ -1,0 +1,690 @@
+        /* --- Global Reset & Variables --- */
+        :root {
+            --secondary-color: #37474f;
+            --accent-color: #ffab40;
+            --error-color: #f44336;
+            --font-sans: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+            --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.25);
+            --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.3);
+            --border-radius-sm: 4px;
+            --border-radius-md: 8px;
+            --border-radius-lg: 12px;
+        }
+
+
+        /* --- Layout & Panels --- */
+        #audio-display {
+            display: none;
+            width: 100%;
+            max-width: 1440px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            background-color: white;
+        overflow: auto;
+        }
+
+        #audio-display h4,#audio-display h3 {
+            margin: 5px 0;
+        }
+
+        /* #top-controls-area {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin: 5px 0;
+        } */
+
+        #main-content-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            width: 100%;
+        }
+
+        #left-panels {
+            flex: 5;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        #center-panel-area {
+            flex: 7;
+            min-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        #right-panels {
+            flex: 4;
+            min-width: 280px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+/* --- Fixed 操作パネルの基本スタイル --- */
+.fixed-操作パネル {
+    position: fixed;
+    bottom: 5px; /* 画面下からの位置 */
+    left: 50%;    /* 中央寄せの基準 */
+    transform: translateX(-50%); /* 水平方向中央寄せ */
+    width: 90%;   /* パネルの幅 (ビューポートに対して) */
+    max-width: 800px; /* 最大幅 (広がりすぎないように) */
+    background-color: white; /* パネル背景色 (既存の変数を利用) */
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg); /* 大きめの影 */
+    padding: 15px;
+    z-index: 1000; /* 他の要素より手前に表示 */
+    display: flex;
+    flex-direction: column; /* ヘッダーとコンテントを縦に並べる */
+    gap: 10px;
+}
+
+
+
+/* --- 各セクションの共通スタイル --- */
+.fixed-panel-section {
+    flex: 1; /* 基本的に均等に幅を取る */
+    min-width: 280px; /* 最小幅を指定して、折り返し時の見栄えを調整 */
+    background-color: rgba(0,0,0,0.1); /* セクション背景を少し暗く (オプション) */
+    border-radius: var(--border-radius-lg);
+    padding: 5px;
+}
+
+/* --- 各セクションの共通スタイル --- */
+.fixed-panel-section h2{
+margin: 0;
+}
+
+
+
+
+/* --- レスポンシブ対応 (画面が狭い場合) --- */
+@media (max-width: 768px) {
+    .fixed-操作パネル {
+        width: 95%;
+        bottom: 10px;
+        padding: 10px;
+    }
+    .fixed-panel-content {
+        flex-direction: column; /* 狭い画面では縦積みにする */
+    }
+    .fixed-panel-section {
+        min-width: auto; /* 最小幅を解除 */
+    }
+}
+        .panel {
+            padding: 10px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .panel h2 {
+            font-size: 1.3em;
+            color: var(--text-light);
+            margin-bottom: 18px;
+            font-weight: 500;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
+        }
+
+        .panel h3 {
+            font-size: 1.1em;
+            color: var(--text-medium);
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        #piano-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            overflow-x: auto;
+            padding: 10px 0;
+            border-radius: var(--border-radius-md);
+            background-color: #1e272e;
+            box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.4);
+        }
+
+        .piano {
+            display: flex;
+            position: relative;
+            padding: 8px;
+            transform-origin: top center;
+        }
+
+
+
+
+
+        button:disabled {
+            background-color: #4a5568;
+            color: #718096;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            font-size: 0.9em;
+            color: var(--text-medium);
+            cursor: pointer;
+        }
+
+        /* --- Piano Keys --- */
+        .key {
+            border: 1px solid #1a202c;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            padding-bottom: 7px;
+            font-size: 8px;
+            font-weight: bold;
+            user-select: none;
+            box-sizing: border-box;
+            transition: background-color 0.05s ease, transform 0.05s ease, box-shadow 0.08s ease;
+            border-radius: var(--border-radius-sm);
+        }
+
+        .key.white {
+            width: 38px;
+            height: 160px;
+            background-color: #e2e8f0;
+            color: #2d3748;
+            z-index: 1;
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+            margin: 0 1.5px;
+        }
+
+        .key.black {
+            width: 22px;
+            height: 90px;
+            background-color: #2d3748;
+            color: #a0aec0;
+            position: absolute;
+            z-index: 2;
+            margin-left: -11px;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+        }
+
+        .key:active,
+        .key.playing {
+            transform: translateY(2px) scale(0.97);
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        .key.white:active,
+        .key.white.playing {
+            background-color: #bee3f8;
+        }
+
+        .key.black:active,
+        .key.black.playing {
+            background-color: #4a5568;
+        }
+
+        .key.scale-highlight {
+            box-shadow: 0 0 10px 3px var(--accent-color) !important;
+            border-color: var(--accent-color) !important;
+        }
+
+        .key.scale-highlight.playing {
+            background-color: #fed7aa;
+        }
+
+        /* オレンジ系 */
+
+        .key.black[data-note-base="C#"] {
+            left: calc(1 * 41px - 11px);
+        }
+
+        .key.black[data-note-base="D#"] {
+            left: calc(2 * 41px - 11px);
+        }
+
+        .key.black[data-note-base="F#"] {
+            left: calc(4 * 41px - 11px);
+        }
+
+        .key.black[data-note-base="G#"] {
+            left: calc(5 * 41px - 11px);
+        }
+
+        .key.black[data-note-base="A#"] {
+            left: calc(6 * 41px - 11px);
+        }
+
+        /* LFO Controls */
+        .lfo-controls {
+            border-top: 1px dashed var(--border-color);
+            margin-top: 15px;
+            padding-top: 15px;
+        }
+
+        .lfo-controls .control-grid {
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        }
+
+        .lfo-controls label {
+            font-size: 0.85em;
+        }
+
+        .lfo-controls span {
+            font-size: 0.8em;
+            color: var(--text-medium);
+            margin-left: 4px;
+        }
+
+        /* Drum Pads, Noise, Sequencer */
+        .pads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
+            gap: 10px;
+        }
+
+        .pad,
+        .noise-button {
+            padding: 15px 10px;
+            text-align: center;
+            border-radius: var(--border-radius-md);
+            cursor: pointer;
+            transition: background-color 0.1s, transform 0.1s;
+            box-shadow: var(--shadow-sm);
+            font-weight: 500;
+            font-size: 0.9em;
+        }
+
+        .pad:hover,
+        .noise-button:hover {
+            background-color: #5a6572;
+        }
+
+        .pad:active,
+        .noise-button:active {
+            background-color: #2c3e50;
+            transform: scale(0.96);
+        }
+
+
+
+        #noise-filter-cutoff-value {
+            font-size: 0.85em;
+            color: var(--text-medium);
+            margin-left: 5px;
+        }
+
+        .sequencer-controls .control-group {
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sequencer-track {
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px dotted var(--border-color);
+        }
+
+        .sequencer-track:last-child {
+            border-bottom: none;
+        }
+
+        .track-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .track-name {
+            font-size: 1em;
+            color: var(--text-medium);
+            cursor: pointer;
+        }
+
+        .track-name:hover {
+            color: var(--text-light);
+        }
+
+        .track-controls-mini {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .track-controls-mini button {
+            padding: 5px 8px;
+            font-size: 0.85em;
+        }
+
+        .step-sequencer-grid {
+            display: grid;
+            grid-template-columns: repeat(16, 1fr);
+            gap: 5px;
+            margin-bottom: 8px;
+            padding: 5px;
+            background-color: #1a202c;
+            border-radius: var(--border-radius-sm);
+        }
+
+        .step-button {
+            width: 100%;
+            aspect-ratio: 1/1;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            transition: background-color 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75em;
+            color: var(--text-medium);
+        }
+
+        .step-button.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .step-button.playing {
+            outline: 2px solid var(--accent-color);
+        }
+
+
+
+        #bgm-playlist-container {
+            width: 100%;
+        }
+
+        #bgm-playlist {
+            list-style-type: none;
+            max-height: 180px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            padding: 10px;
+            background-color: #1a202c;
+            color:white;
+        }
+
+        .bgm-list-item {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--secondary-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9em;
+            color: var(--text-medium);
+        }
+
+        .bgm-list-item:last-child {
+            border-bottom: none;
+        }
+
+        .bgm-list-item span.filename {
+            flex-grow: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-right: 10px;
+            font-weight: 500;
+        }
+
+        .bgm-item-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+            flex-wrap: nowrap;
+        }
+
+
+        .bgm-list-item button.delete-bgm {
+            background-color: #c62828;
+            font-size: 0.8em;
+            padding: 4px 6px;
+            line-height: 1;
+        }
+
+        .bgm-list-item button.delete-bgm:hover {
+            background-color: #b71c1c;
+        }
+
+        .bgm-list-item.playing-bgm {
+            background-color: var(--secondary-color);
+            color: var(--text-light);
+            font-weight: bold;
+        }
+
+        #status {
+            color: white;
+            background-color: var(--secondary-color);
+            padding: 12px;
+            border-radius: var(--border-radius-md);
+            text-align: center;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+            font-size: 1em;
+            font-weight: 500;
+        }
+
+
+        #download-area {
+            margin-top: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        #download-area a {
+            font-size: 0.9em;
+            color: #90caf9;
+            text-decoration: none;
+            padding: 7px 12px;
+            background-color: var(--secondary-color);
+            border-radius: var(--border-radius-sm);
+            border: 1px solid var(--border-color);
+        }
+
+        #download-area a:hover {
+            text-decoration: underline;
+            background-color: #455a64;
+        }
+
+        .info-text {
+            font-size: 0.85em;
+            color: var(--text-medium);
+            margin-top: 3px;
+        }
+
+        hr {
+            width: 100%;
+            border: none;
+            border-top: 1px solid var(--border-color);
+            margin: 20px 0;
+        }
+
+        #mic-control-group {
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 10px;
+        }
+
+        #mic-control-group label {
+            margin-bottom: 0;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 1200px) {
+            #main-content-area {
+                flex-direction: column;
+            }
+
+            #left-panels,
+            #center-panel-area,
+            #right-panels {
+                width: 100%;
+                flex: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                font-size: 13px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+                margin-bottom: 18px;
+            }
+
+            #app-container {
+                gap: 18px;
+            }
+
+
+            #main-controls {
+                order: 1;
+            }
+
+            #piano-wrapper {
+                order: 2;
+            }
+
+            .piano {
+                transform: scale(0.9);
+            }
+
+            .audio-control-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 12px;
+                border-bottom: solid black;
+            }
+
+            .key.white {
+                width: 30px;
+                height: 120px;
+            }
+
+            .key.black {
+                width: 17px;
+                height: 70px;
+                margin-left: -8.5px;
+            }
+
+            .key.black[data-note-base="C#"] {
+                left: calc(1 * 32px - 8.5px);
+            }
+
+            .key.black[data-note-base="D#"] {
+                left: calc(2 * 32px - 8.5px);
+            }
+
+            .key.black[data-note-base="F#"] {
+                left: calc(4 * 32px - 8.5px);
+            }
+
+            .key.black[data-note-base="G#"] {
+                left: calc(5 * 32px - 8.5px);
+            }
+
+            .key.black[data-note-base="A#"] {
+                left: calc(6 * 32px - 8.5px);
+            }
+
+            .bgm-list-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+
+            .bgm-item-controls {
+                justify-content: flex-start;
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+
+            .step-sequencer-grid {
+                grid-template-columns: repeat(8, 1fr);
+            }
+
+            .pads-grid {
+                grid-template-columns: repeat(auto-fit, minmax(65px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.3em;
+            }
+
+            .control-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .piano {
+                transform: scale(0.85);
+            }
+
+            .key.white {
+                width: 28px;
+                height: 100px;
+            }
+
+            .key.black {
+                width: 15px;
+                height: 60px;
+                margin-left: -7.5px;
+            }
+
+            .key.black[data-note-base="C#"] {
+                left: calc(1 * 30px - 7.5px);
+            }
+
+            .key.black[data-note-base="D#"] {
+                left: calc(2 * 30px - 7.5px);
+            }
+
+            .key.black[data-note-base="F#"] {
+                left: calc(4 * 30px - 7.5px);
+            }
+
+            .key.black[data-note-base="G#"] {
+                left: calc(5 * 30px - 7.5px);
+            }
+
+            .key.black[data-note-base="A#"] {
+                left: calc(6 * 30px - 7.5px);
+            }
+
+            .pads-grid {
+                grid-template-columns: repeat(auto-fit, minmax(55px, 1fr));
+            }
+
+            .pad {
+                padding: 8px 5px;
+                font-size: 0.75em;
+            }
+
+            .step-sequencer-grid {
+                grid-template-columns: repeat(8, 1fr);
+                gap: 3px;
+            }
+
+            .step-button {
+                height: 25px;
+            }
+        }

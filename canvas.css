@@ -1,0 +1,90 @@
+:root {
+    --primary-color: #007bff; /* ... (他のCSS変数は変更なし) ... */
+    --secondary-color: #6c757d;
+    --light-gray: #f8f9fa;
+    --medium-gray: #e9ecef;
+    --dark-gray: #343a40;
+    --border-color: #ced4da;
+    --active-glow: 0 0 8px rgba(0, 123, 255, 0.5);
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  #canvas-display {    display: none; /* 初期非表示 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: white;
+overflow: auto;} /* 少し幅広に */
+  .controls-panel { background-color: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+  .control-group { margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--medium-gray); }
+  .control-group:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .control-group legend { font-weight: bold; color: var(--primary-color); margin-bottom: 8px; font-size: 1.1em; }
+
+  .toolbar, .canvas-size-controls, .bg-image-options, .shape-options, 
+  .save-options-group, .text-options, .grid-options, .history-controls { /* グリッドと履歴UI追加 */
+    display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+  }
+  .shape-options, .text-options, .grid-options { margin-top: 8px; }
+
+  /* ... (他のinput, button, selectのスタイルはほぼ同じ) ... */
+  .toolbar label, .canvas-size-controls label, .bg-image-options label, .shape-options label, .save-options-group label, .text-options label, .grid-options label, .history-controls label,
+  .toolbar button, .canvas-size-controls button, .bg-image-options button, .save-options-group button, .history-controls button,
+  .toolbar select, .toolbar input, .canvas-size-controls input, .bg-image-options input, .shape-options input, .save-options-group select, .save-options-group input, .text-options select, .text-options input, .grid-options input {
+    margin-bottom: 5px;
+  }
+  input[type="color"], input[type="text"], input[type="number"], select, button {
+    padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.95em;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  input[type="color"] { padding: 2px; min-height: 38px; }
+  input[type="text"], input[type="number"], select { min-width: 120px; }
+  input:focus, select:focus { border-color: var(--primary-color); box-shadow: var(--active-glow); outline: none; }
+  /* button { background-color: var(--primary-color); color: white; cursor: pointer; transition: background-color 0.2s; }
+  button:hover:not(:disabled) { background-color: #0056b3; }
+  button:active:not(:disabled) { transform: translateY(1px); }
+  button:disabled { background-color: var(--secondary-color); cursor: not-allowed; opacity: 0.7;} */
+
+
+  .layers-panel { background-color: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+  .layers-panel h3 { margin-top: 0; color: var(--primary-color); border-bottom: 1px solid var(--medium-gray); padding-bottom: 10px; }
+  #layer-list { max-height: 200px; overflow-y: auto; padding-right: 5px; } /* 少し高さを調整 */
+  /* ... (Layer itemのスタイルはほぼ同じ) ... */
+  .layer-item { display: flex; align-items: center; padding: 8px 10px; border: 1px solid var(--border-color); border-radius: 6px; margin-bottom: 8px; background-color: var(--light-gray); transition: background-color 0.2s, box-shadow 0.2s; user-select: none; }
+  .layer-item:hover { background-color: var(--medium-gray); }
+  .layer-item.active { background-color: var(--primary-color); color: white; border-color: var(--primary-color); box-shadow: var(--active-glow); }
+  .layer-item.active .layer-name-span, .layer-item.active .layer-type-indicator { color: white; }
+  .layer-item.active button { background-color: white; color: var(--primary-color); border: 1px solid var(--primary-color); }
+  .layer-item.active button:hover { background-color: #f0f0f0; }
+  .layer-item input[type="checkbox"] { margin-right: 10px; cursor: pointer; transform: scale(1.2); }
+  .layer-name-span { flex-grow: 1; padding: 2px 4px; cursor: pointer; font-weight: 500; min-width: 80px; }
+  .layer-name-span.editing { border: 1px solid var(--primary-color); background-color: white; color: var(--dark-gray) !important; cursor: text; border-radius: 3px; box-shadow: var(--active-glow); }
+  .layer-type-indicator { font-size: 0.8em; margin-left: 8px; color: var(--secondary-color); font-style: italic; }
+  .layer-item-buttons button { margin-left: 6px; padding: 3px 6px; font-size: 1em; background-color: var(--medium-gray); color: var(--dark-gray); border: 1px solid var(--border-color); }
+  .layer-item-buttons button:hover:not(:disabled) { background-color: var(--secondary-color); color: white; }
+  .layer-item-buttons button:disabled { cursor: not-allowed; opacity: 0.4; background-color: var(--light-gray); }
+
+
+  .canvas-container-wrapper { display: flex; justify-content: center; }
+  .canvas-container { position: relative; border: 2px solid var(--dark-gray); box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
+  canvas { position: absolute; top: 0; left: 0; border: none; }
+  #grid-canvas { pointer-events: none; z-index: 1; /* 描画レイヤーより下、プレビューよりは下 */ }
+  #preview-canvas { pointer-events: none; z-index: 999; /* 常に最前面のプレビュー */ }
+
+
+  #text-input-field { width: 150px; } 
+  .opacity-slider, #quality-slider, #font-family-select, #grid-angle-slider { width: 150px; vertical-align: middle;}
+  #grid-spacing-input { width: 70px; }
+  .size-input { width: 70px; text-align: right; }
+  .bg-image-options input[type="radio"] { margin-right: 3px; transform: scale(1.1); }
+  .bg-image-options label { margin-right: 10px; }
+  .help-text { font-size: 0.85em; color: var(--secondary-color); margin-left: 5px; }
+  
+  #fill-shape-checkbox-label, #vertical-text-checkbox-label, #show-grid-checkbox-label { 
+    display: inline-flex; align-items: center; cursor: pointer; 
+  }
+  #fill-shape-checkbox, #vertical-text-checkbox, #show-grid-checkbox { 
+    margin-right: 5px; transform: scale(1.2); 
+  }
+  #quality-control-container { display: inline-flex; align-items: center; gap: 5px; margin-left: 10px; }
